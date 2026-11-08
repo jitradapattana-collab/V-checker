@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pre-post Checker – ตรวจโพสต์ก่อนลงโซเชียล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2433;--mute:#667085;--line:#d9d5cb;--ok:#0f7a4d;--okbg:#e3f3ea;--bad:#c2261f;--badbg:#fbe6e4;--warn:#9a6700;--warnbg:#fff1cf;--accent:#1d2433;--accent-ink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151a24;--card:#1e2532;--ink:#eef0f4;--mute:#a1a9b8;--line:#344054;--ok:#5fd09a;--okbg:#17372b;--bad:#ff8a82;--badbg:#44201e;--warn:#f2c14e;--warnbg:#41330f;--accent:#eef0f4;--accent-ink:#151a24}}
+:root[data-theme="dark"]{--bg:#151a24;--card:#1e2532;--ink:#eef0f4;--mute:#a1a9b8;--line:#344054;--ok:#5fd09a;--okbg:#17372b;--bad:#ff8a82;--badbg:#44201e;--warn:#f2c14e;--warnbg:#41330f;--accent:#eef0f4;--accent-ink:#151a24}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans Thai",system-ui,-apple-system,sans-serif;line-height:1.55;font-size:16px}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;font-weight:800;margin:0 0 4px}
+.sub{color:var(--mute);margin:0 0 16px;font-size:.95rem}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+h2{font-size:1.05rem;margin:0 0 12px;font-weight:600}
+label{display:block;font-size:.9rem;font-weight:600;margin:10px 0 4px}
+.hint{font-weight:400;color:var(--mute)}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px 10px}
+textarea{min-height:84px;resize:vertical}
+input:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:420px){.row{grid-template-columns:1fr}}
+button{font:inherit;font-weight:600;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:10px 16px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.imgbox img{max-width:100%;max-height:260px;border-radius:6px;border:1px solid var(--line);display:block;margin:8px 0}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:400}
+.chk input{margin-top:5px;width:18px;height:18px;flex:none}
+.verdict{border-radius:8px;padding:14px;font-weight:800;font-size:1.15rem;margin-bottom:12px}
+.verdict.ok{background:var(--okbg);color:var(--ok)}
+.verdict.bad{background:var(--badbg);color:var(--bad)}
+.item{border-left:5px solid var(--line);padding:8px 12px;margin:8px 0;border-radius:0 6px 6px 0;background:var(--bg)}
+.item.ok{border-color:var(--ok)}.item.bad{border-color:var(--bad)}.item.skip{border-color:var(--warn)}
+.item b{display:block}
+.tag{font-size:.85rem;font-weight:600}
+.ok .tag{color:var(--ok)}.bad .tag{color:var(--bad)}.skip .tag{color:var(--warn)}
+.item p{margin:2px 0 0;font-size:.92rem;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
+td,th{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
+td:last-child,th:last-child{text-align:right}
+.note{font-size:.85rem;color:var(--mute);margin-top:10px}
+</style>
+</head>
+<body>
+<main>
+<h1>Pre-post Checker</h1>
+<p class="sub">ตรวจโพสต์เทียบ Brief จาก Merchandise ก่อนลงโซเชียล</p>
+
+<section>
+<h2>1. Brief จาก Merchandise</h2>
+<label for="bName">ชื่อโปรโมชั่น</label>
+<input type="text" id="bName" placeholder="เช่น Jingle Bell Deal">
+<div class="row">
+<div><label for="bDate">ช่วงวันที่โปร</label><input type="text" id="bDate" placeholder="24 Dec 26 - 3 Jan 27"></div>
+<div><label for="bPromo">ราคาโปร (บาท)</label><input type="text" id="bPromo" placeholder="99"></div>
+</div>
+<div class="row">
+<div><label for="bNormal">ราคาปกติ <span class="hint">คั่นด้วย ,</span></label><input type="text" id="bNormal" placeholder="110, 120, 130"></div>
+<div><label for="bCond">เงื่อนไข</label><input type="text" id="bCond" placeholder="2 ชิ้น 99"></div>
+</div>
+<label for="bProd">ชื่อสินค้าที่ร่วมรายการ <span class="hint">บรรทัดละ 1 รายการ</span></label>
+<textarea id="bProd" placeholder="เรดเวลเวทครีมชีสชิโอะปัง&#10;เมลอนชิโอะปัง"></textarea>
+</section>
+
+<section>
+<h2>2. โพสต์ที่จะลง</h2>
+<label for="pHead">Head LINE <span class="hint">หัวข้อในภาพ/โพสต์</span></label>
+<input type="text" id="pHead">
+<label for="pCap">รายละเอียด/แคปชั่น</label>
+<textarea id="pCap"></textarea>
+<label for="pDate">วันที่ระบุในโพสต์</label>
+<input type="text" id="pDate">
+<label for="pImg">รูปชิ้นงาน <span class="hint">ใช้ดูเทียบด้วยตา ไม่ถูกอัปโหลดไปที่ไหน</span></label>
+<input type="file" id="pImg" accept="image/*">
+<div class="imgbox" id="imgBox"></div>
+<div id="imgChecks"></div>
+<div class="actions">
+<button id="runBtn">ตรวจโพสต์</button>
+<button class="ghost" id="demoBtn">ใส่ตัวอย่าง</button>
+<button class="ghost" id="clearBtn">ล้างฟอร์ม</button>
+</div>
+</section>
+
+<section id="result" hidden>
+<h2>ผลตรวจ</h2>
+<div id="verdict"></div>
+<div id="items"></div>
+<div class="actions"><button id="saveBtn">บันทึกผลตรวจ</button></div>
+</section>
+
+<section>
+<h2>สถิติที่บันทึกไว้</h2>
+<div id="stats"></div>
+<div class="actions"><button class="ghost" id="resetLog">ล้างสถิติ</button></div>
+<p class="note">สถิติเก็บในเบราว์เซอร์นี้เท่านั้น ใช้เทียบจำนวนข้อผิดพลาดก่อนและหลังใช้ระบบสำหรับบทที่ 4</p>
+</section>
+</main>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var TYPES=["Head LINE","รายละเอียด/ราคา","ชื่อสินค้า","รูปสินค้า","วัน-เวลา"];
+var checked={};
+var lastErrors=null,lastName="";
+
+function norm(s){return (s||"").toLowerCase().replace(/\s+/g,"")}
+function nums(s){return (s||"").match(/\d+/g)||[]}
+function toks(s){return (s||"").toLowerCase().match(/[a-z]+|\d+|[ก-๙]+/g)||[]}
+function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i})}
+function lines(s){return (s||"").split(/\n/).map(function(x){return x.trim()}).filter(Boolean)}
+
+function renderImgChecks(){
+  var box=$("imgChecks");box.textContent="";
+  var ps=lines($("bProd").value);
+  if(!ps.length)return;
+  var t=document.createElement("label");t.textContent="รูปตรงกับสินค้าใน Brief หรือไม่ (ติ๊กเมื่อตรวจแล้ว)";box.appendChild(t);
+  ps.forEach(function(p){
+    var l=document.createElement("label");l.className="chk";
+    var c=document.createElement("input");c.type="checkbox";c.checked=!!checked[p];
+    c.addEventListener("change",function(){checked[p]=c.checked});
+    var s=document.createElement("span");s.textContent="รูปสินค้า: "+p;
+    l.appendChild(c);l.appendChild(s);box.appendChild(l);
+  });
+}
+
+function check(){
+  var b={name:$("bName").value,date:$("bDate").value,promo:$("bPromo").value,normal:$("bNormal").value,cond:$("bCond").value,prods:lines($("bProd").value)};
+  var p={head:$("pHead").value,cap:$("pCap").value,date:$("pDate").value};
+  var all=p.head+" "+p.cap;
+  var res=[];
+  if(!b.name.trim()||!p.head.trim()){res.push({t:0,s:"skip",m:"ยังไม่ได้กรอกชื่อโปรใน Brief หรือ Head LINE"})}
+  else if(norm(p.head).indexOf(norm(b.name))>-1){res.push({t:0,s:"ok",m:"Head LINE มีชื่อโปรตรงกับ Brief"})}
+  else{res.push({t:0,s:"bad",m:"Head LINE ไม่ตรงกับ Brief — ควรมี: "+b.name})}
+  var need=uniq(nums(b.promo).concat(nums(b.normal),nums(b.cond)));
+  if(!need.length||!p.cap.trim()){res.push({t:1,s:"skip",m:"ยังไม่ได้กรอกราคา/เงื่อนไข หรือแคปชั่น"})}
+  else{
+    var have=nums(all),miss=need.filter(function(n){return have.indexOf(n)<0});
+    if(miss.length){res.push({t:1,s:"bad",m:"ไม่พบตัวเลขใน Brief ในโพสต์: "+miss.join(", ")})}
+    else{res.push({t:1,s:"ok",m:"ราคาและเงื่อนไขครบตาม Brief ("+need.join(", ")+")"})}
+  }
+  if(!b.prods.length||!all.trim()){res.push({t:2,s:"skip",m:"ยังไม่ได้กรอกชื่อสินค้าใน Brief หรือเนื้อหาโพสต์"})}
+  else{
+    var nm=b.prods.filter(function(x){return norm(all).indexOf(norm(x))<0});
+    if(nm.length){res.push({t:2,s:"bad",m:"ไม่พบชื่อสินค้าในโพสต์: "+nm.join(", ")})}
+    else{res.push({t:2,s:"ok",m:"ชื่อสินค้าครบทั้ง "+b.prods.length+" รายการ"})}
+  }
+  if(!b.prods.length){res.push({t:3,s:"skip",m:"ยังไม่มีรายการสินค้าให้ตรวจรูป"})}
+  else{
+    var hasImg=!!$("imgBox").querySelector("img");
+    var un=b.prods.filter(function(x){return !checked[x]});
+    if(!hasImg){res.push({t:3,s:"skip",m:"ยังไม่ได้แนบรูปชิ้นงาน"})}
+    else if(un.length){res.push({t:3,s:"bad",m:"ยังไม่ยืนยันรูปสินค้า: "+un.join(", ")})}
+    else{res.push({t:3,s:"ok",m:"ยืนยันรูปสินค้าตรงกับ Brief ครบแล้ว"})}
+  }
+  if(!b.date.trim()||!p.date.trim()){res.push({t:4,s:"skip",m:"ยังไม่ได้กรอกวันที่ใน Brief หรือในโพสต์"})}
+  else{
+    var A=uniq(toks(b.date)),B=uniq(toks(p.date));
+    var d1=A.filter(function(x){return B.indexOf(x)<0}),d2=B.filter(function(x){return A.indexOf(x)<0});
+    if(d1.length||d2.length){res.push({t:4,s:"bad",m:"วันที่ไม่ตรงกัน — Brief: "+b.date+" / โพสต์: "+p.date})}
+    else{res.push({t:4,s:"ok",m:"วันที่ตรงกับ Brief: "+b.date})}
+  }
+  return {res:res,name:b.name};
+}
+
+function show(){
+  var r=check();var box=$("items");box.textContent="";
+  var bad=r.res.filter(function(x){return x.s==="bad"}),skip=r.res.filter(function(x){return x.s==="skip"});
+  var v=$("verdict");v.textContent="";
+  var d=document.createElement("div");
+  if(bad.length){d.className="verdict bad";d.textContent="ต้องแก้ "+bad.length+" จุด ก่อนโพสต์"}
+  else if(skip.length){d.className="verdict bad";d.textContent="ยังตรวจไม่ครบ "+skip.length+" ข้อ"}
+  else{d.className="verdict ok";d.textContent="ผ่านทุกข้อ พร้อมส่งให้พี่อนุมัติ"}
+  v.appendChild(d);
+  r.res.forEach(function(x){
+    var it=document.createElement("div");it.className="item "+x.s;
+    var b=document.createElement("b");b.textContent=TYPES[x.t];
+    var tg=document.createElement("span");tg.className="tag";tg.textContent=x.s==="ok"?"ผ่าน":x.s==="bad"?"ไม่ผ่าน":"ยังไม่ครบ";
+    var pp=document.createElement("p");pp.textContent=x.m;
+    it.appendChild(b);it.appendChild(tg);it.appendChild(pp);box.appendChild(it);
+  });
+  lastErrors=bad.map(function(x){return x.t});lastName=r.name;
+  $("result").hidden=false;$("result").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function getLog(){try{return JSON.parse(localStorage.getItem("ppc_log")||"[]")}catch(e){return []}}
+function setLog(a){try{localStorage.setItem("ppc_log",JSON.stringify(a))}catch(e){}}
+function renderStats(){
+  var log=getLog(),box=$("stats");box.textContent="";
+  if(!log.length){var e=document.createElement("p");e.className="note";e.textContent="ยังไม่มีผลตรวจที่บันทึก กดบันทึกผลตรวจหลังตรวจแต่ละโพสต์";box.appendChild(e);return}
+  var passed=log.filter(function(x){return !x.e.length}).length;
+  var s=document.createElement("p");s.textContent="ตรวจแล้ว "+log.length+" โพสต์ ผ่านครั้งแรก "+passed+" โพสต์ ("+Math.round(passed*100/log.length)+"%)";box.appendChild(s);
+  var tb=document.createElement("table");
+  var h=document.createElement("tr");h.innerHTML="<th>ประเภทข้อผิดพลาด</th><th>ครั้ง</th>";tb.appendChild(h);
+  TYPES.forEach(function(t,i){
+    var n=log.filter(function(x){return x.e.indexOf(i)>-1}).length;
+    var tr=document.createElement("tr"),a=document.createElement("td"),c=document.createElement("td");
+    a.textContent=t;c.textContent=n;tr.appendChild(a);tr.appendChild(c);tb.appendChild(tr);
+  });
+  box.appendChild(tb);
+}
+
+$("bProd").addEventListener("input",renderImgChecks);
+$("pImg").addEventListener("change",function(){
+  var f=this.files&&this.files[0],box=$("imgBox");box.textContent="";
+  if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){var im=document.createElement("img");im.alt="รูปชิ้นงานที่จะโพสต์";im.src=rd.result;box.appendChild(im)};
+  rd.readAsDataURL(f);
+});
+$("runBtn").addEventListener("click",show);
+$("saveBtn").addEventListener("click",function(){
+  if(!lastErrors)return;
+  var log=getLog();log.push({n:lastName,e:lastErrors,t:Date.now()});setLog(log);renderStats();
+  this.textContent="บันทึกแล้ว";var b=this;setTimeout(function(){b.textContent="บันทึกผลตรวจ"},1500);
+});
+$("resetLog").addEventListener("click",function(){setLog([]);renderStats()});
+$("clearBtn").addEventListener("click",function(){
+  ["bName","bDate","bPromo","bNormal","bCond","bProd","pHead","pCap","pDate"].forEach(function(i){$(i).value=""});
+  checked={};$("imgBox").textContent="";$("pImg").value="";$("result").hidden=true;renderImgChecks();
+});
+$("demoBtn").addEventListener("click",function(){
+  $("bName").value="Jingle Bell Deal";$("bDate").value="24 Dec 26 - 3 Jan 27";$("bPromo").value="99";
+  $("bNormal").value="110, 120, 130";$("bCond").value="2 ชิ้น 99";
+  $("bProd").value="เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง";
+  $("pHead").value="Jingle Bell Deal";
+  $("pCap").value="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.- เมลอนชิโอะปัง และเรดเวลเวทครีมชีสชิ้นโอะปัง";
+  $("pDate").value="24 Dec 26 - 4 Jan 27";
+  checked={};renderImgChecks();
+});
+renderImgChecks();renderStats();
+})();
+</script>
+</body>
+</html>
