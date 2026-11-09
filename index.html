@@ -9,6 +9,7 @@
 :root{--bg:#fff4ee;--card:#fffdfb;--ink:#3d2c3a;--mute:#7a6677;--line:#f4d3cf;--pink:#ff8fab;--pinkink:#3d2c3a;--lav:#efe6ff;--ok:#127a53;--okbg:#d9f6e8;--bad:#c0264a;--badbg:#ffe0e7;--warn:#8a5a00;--warnbg:#fff0c2;--inp:#fff7f3}
 @media (prefers-color-scheme:dark){:root{--bg:#2a2030;--card:#362a3d;--ink:#fbeff6;--mute:#c9b6c6;--line:#54405c;--lav:#46385a;--ok:#7ee0b2;--okbg:#1f4034;--bad:#ff9bb3;--badbg:#4d2330;--warn:#ffd978;--warnbg:#4a3a12;--inp:#2a2030;--pinkink:#2a2030}}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mali","Noto Sans Thai",system-ui,sans-serif;line-height:1.6;padding-top:env(safe-area-inset-top,0px)}
 main{max-width:660px;margin:0 auto;padding:14px 14px 150px}
@@ -17,7 +18,7 @@ header{text-align:center}h1{font-size:1.5rem;margin:0}.sub{margin:0;color:var(--
 h2{font-size:1.08rem;margin:0 0 4px}.lead{color:var(--mute);font-size:.9rem;margin:0 0 8px}
 label{display:block;font-weight:600;margin:12px 0 2px;font-size:.95rem}
 .help{display:block;color:var(--mute);font-size:.82rem;font-weight:400}
-input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--inp);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+input[type=text],input[type=password],textarea{width:100%;font:inherit;color:var(--ink);background:var(--inp);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
 textarea{min-height:80px;resize:vertical}
 input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--pink);outline-offset:1px}
 button{font:inherit;font-weight:700;border:0;border-radius:999px;background:var(--pink);color:var(--pinkink);padding:9px 16px;cursor:pointer}
@@ -26,7 +27,8 @@ a.btn{display:inline-block;font-weight:700;border-radius:999px;padding:9px 16px;
 .chip[aria-pressed=true]{background:var(--pink);color:var(--pinkink)}
 .actions,#tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}#tabs{margin:0}
 .view{display:none}.view.on{display:block}
-.banner{background:var(--lav);border-radius:16px;padding:10px 14px;margin:10px 0;font-weight:600}
+.box{background:var(--lav);border-radius:16px;padding:10px 14px;margin:10px 0}
+.lib{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:2px solid var(--line);border-radius:14px;padding:8px 12px;margin:6px 0}
 .th{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 .th div{position:relative}.th img{width:84px;height:84px;object-fit:cover;border-radius:12px;border:2px solid var(--line);display:block}
 .th img.big{width:100%;height:auto;max-height:70vh;object-fit:contain}
@@ -47,42 +49,70 @@ nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px
 nav button{background:none;color:var(--mute);display:flex;flex-direction:column;align-items:center;font-size:.72rem;padding:4px 8px;border-radius:14px;flex:1;max-width:96px}
 nav button span{font-size:1.3rem;line-height:1.2}nav button.on{background:var(--lav);color:var(--ink)}
 #mas{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:0;width:64px;z-index:4;cursor:pointer;animation:walk 24s linear infinite}
+.flip{animation:flip 24s linear infinite}
 #mas .in{animation:hop .5s ease-in-out infinite}#mas.jump .in{animation:jump .6s ease-out}
-#bub{position:absolute;bottom:84px;left:50%;transform:translateX(-50%);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:4px 10px;font-size:.8rem;white-space:nowrap;display:none}
+#bub{position:absolute;bottom:84px;left:0;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:4px 10px;font-size:.8rem;width:max-content;max-width:70vw;display:none}
 .leg{transform-box:fill-box;transform-origin:50% 0}.l{animation:sw .5s ease-in-out infinite}.r{animation:sw .5s ease-in-out infinite reverse}
 .eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
-@keyframes walk{0%{left:0;transform:scaleX(1)}49.9%{left:calc(100% - 64px);transform:scaleX(1)}50%{left:calc(100% - 64px);transform:scaleX(-1)}99.9%{left:0;transform:scaleX(-1)}100%{left:0;transform:scaleX(1)}}
+@keyframes walk{0%,100%{left:0}50%{left:calc(100% - 64px)}}
+@keyframes flip{0%,49.9%{transform:scaleX(1)}50%,99.9%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
 @keyframes hop{50%{transform:translateY(-4px)}}@keyframes jump{40%{transform:translateY(-34px) rotate(-8deg)}}
 @keyframes sw{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-14deg)}}@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
-@media (prefers-reduced-motion:reduce){#mas,#mas .in,.leg,.eyes{animation:none}#mas{left:10px}}
+@media (prefers-reduced-motion:reduce){#mas,.flip,#mas .in,.leg,.eyes{animation:none}#mas{left:10px}}
 </style>
 </head>
 <body>
 <main>
 <header><h1>น้องวีเช็ค 🐣</h1><p class="sub">ช่วยเช็กโพสต์ก่อนลงโซเชียล ค่อยๆ ทำทีละหน้านะ</p></header>
-<div id="banner" class="banner" hidden>💌 พี่เลี้ยงส่ง Brief มาแล้ว ไปหน้า “กรอก” ได้เลย <button class="soft" id="lockBtn"></button></div>
-<div class="card"><div id="tabs"></div></div>
+<div id="topBar" class="actions" style="justify-content:center;margin:6px 0" hidden><button class="soft" id="homeBtn">🏠 หน้าแรก</button></div>
+<p id="conn" class="note" style="text-align:center;margin:4px 0"></p>
+<div class="card" id="tabsCard" hidden><div id="tabs"></div></div>
 
-<section id="v-brief" class="view">
-<div class="card">
+<section id="v-home" class="view on">
+<div class="card"><h2>🐣 หน้าน้อง</h2><p class="lead">เปิดลิงก์ที่พี่เลี้ยงส่งให้ หรือวางลิงก์/รหัสโปรตรงนี้</p>
+<input type="text" id="codeIn" placeholder="วางลิงก์หรือรหัสโปร" autocomplete="off">
+<div class="actions"><button id="goJunior">เข้าหน้าน้อง</button></div><p class="note" id="homeMsg"></p></div>
+<div class="card"><h2>🔐 หน้าพี่เลี้ยง</h2><p class="lead">ใส่ Brief และจัดการคลังโปร ต้องใช้ PIN ของโปร</p>
+<div class="actions"><button class="soft" id="goMentor">เข้าหน้าพี่เลี้ยง</button></div></div>
+</section>
+
+<section id="v-lib" class="view"><div class="card">
+<h2>📚 คลังโปรของฉัน</h2><p class="lead">รายการเก็บในเครื่องนี้ เปิดโปรต้องใส่ PIN ของโปรนั้น</p>
+<div id="lib"></div>
+<div id="pinAsk" class="box" hidden><label for="libPin" style="margin-top:0">PIN ของ <span id="askName"></span></label>
+<input type="password" id="libPin" autocomplete="off"><div class="actions"><button id="libGo">ปลดล็อกและเปิด</button><button class="soft" id="libCancel">ยกเลิก</button></div></div>
+<div class="actions"><button id="newBtn">+ โปรใหม่</button></div>
+<div id="newForm" class="box" hidden>
+<label for="newTitle" style="margin-top:0">ชื่อโปรโมชั่น</label><input type="text" id="newTitle">
+<label for="newPin">ตั้ง PIN<span class="help">6 ตัวขึ้นไป ใช้ PIN นี้ทุกครั้งที่เปิดโปร จำไว้ให้ดี ลืมแล้วกู้ไม่ได้</span></label><input type="password" id="newPin" autocomplete="off">
+<div class="actions"><button id="newGo">สร้างโปร</button><button class="soft" id="newCancel">ยกเลิก</button></div></div>
+<label for="openCode">เปิดโปรจากเครื่องอื่นด้วยรหัสหรือลิงก์</label>
+<input type="text" id="openCode" placeholder="วางรหัสหรือลิงก์โปร" autocomplete="off">
+<div class="actions"><button class="soft" id="openGo">เปิดโปร</button></div>
+<p class="note" id="libMsg"></p>
+</div></section>
+
+<section id="v-brief" class="view"><div class="card">
 <h2>📝 พี่เลี้ยงใส่ Brief (คำตอบที่ถูกต้อง)</h2>
 <p class="lead">น้องจะกรอกช่องเดียวกันนี้ในหน้า “กรอก” แล้วระบบเทียบให้</p>
-<label for="pName">ชื่อโปรโมชั่น<span class="help">ใช้เป็นชื่อโปรในลิงก์และรายงาน</span></label><input type="text" id="pName">
-<div id="mgmt" class="actions"><button class="soft" id="addBtn">+ เพิ่มสื่อ</button><button class="soft" id="dupBtn">คัดลอกสื่อนี้</button><button class="soft" id="delBtn">ลบสื่อนี้</button></div>
-<label for="bName">ชื่อสื่อ<span class="help">เช่น LINE OA, Facebook, จอ LED</span></label><input type="text" id="bName">
+<label for="pName">ชื่อโปรโมชั่น</label><input type="text" id="pName">
+<label>เพิ่มสื่อ</label>
+<div class="actions" style="margin-top:4px"><button class="soft pre" data-n="TikTok">+ TikTok</button><button class="soft pre" data-n="Facebook">+ Facebook</button><button class="soft pre" data-n="Instagram">+ Instagram</button><button class="soft pre" data-n="จอ LED">+ จอ LED</button><button class="soft pre" data-n="">+ อื่นๆ</button></div>
+<div class="actions"><button class="soft" id="dupBtn">คัดลอกสื่อนี้</button><button class="soft" id="delBtn">ลบสื่อนี้</button></div>
+<label for="bName">ชื่อสื่อ</label><input type="text" id="bName">
 <label for="bHead">Head LINE</label><input type="text" id="bHead">
 <label for="bDetail">รายละเอียด<span class="help">ราคา เงื่อนไข ข้อความที่ต้องมีในภาพ</span></label><textarea id="bDetail"></textarea>
 <label for="bProd">ชื่อสินค้า<span class="help">บรรทัดละ 1 รายการ</span></label><textarea id="bProd"></textarea>
 <label for="bDate">วัน-เวลา</label><input type="text" id="bDate">
-<div class="actions"><button id="shareBtn">สร้างลิงก์ส่ง LINE 💌</button><button class="soft" id="demoBtn">ใส่ตัวอย่าง</button><button class="soft" id="clearBtn">ล้างทั้งหมด</button></div>
-<div id="shareBox" hidden><label for="shareUrl">ลิงก์ (มีทุกสื่อของโปรนี้)</label><input type="text" id="shareUrl" readonly>
+<div class="actions"><button id="saveCloud">บันทึกขึ้นคลัง ☁️</button><button class="soft" id="demoBtn">ใส่ตัวอย่าง</button></div>
+<div id="shareBox" hidden><label for="shareUrl">ลิงก์สำหรับน้อง (ใช้ลิงก์เดิมตลอด)</label><input type="text" id="shareUrl" readonly>
 <div class="actions"><button class="soft" id="copyLink">คัดลอกลิงก์</button><a class="btn" id="lineLink" target="_blank" rel="noopener">เปิด LINE เพื่อส่ง</a></div></div>
 <p class="note" id="shareMsg"></p>
 </div></section>
 
 <section id="v-fill" class="view"><div class="card">
 <h2>✏️ น้องกรอกตามที่เขียนในโพสต์จริง</h2>
-<p class="lead">ช่องเหมือนที่พี่ใส่ไว้ พิมพ์ให้เหมือนโพสต์ที่สุด แล้วไปกดตรวจในหน้า “ผลตรวจ”</p>
+<p class="lead">เลือกสื่อด้านบน แล้วพิมพ์ให้เหมือนโพสต์ที่สุด จากนั้นไปกดตรวจในหน้า “ผลตรวจ”</p>
 <label for="jHead">Head LINE</label><input type="text" id="jHead">
 <label for="jDetail">รายละเอียด</label><textarea id="jDetail"></textarea>
 <label for="jProd">ชื่อสินค้า<span class="help">บรรทัดละ 1 รายการ</span></label><textarea id="jProd"></textarea>
@@ -106,13 +136,14 @@ nav button span{font-size:1.3rem;line-height:1.2}nav button.on{background:var(--
 
 <section id="v-res" class="view">
 <div class="card"><h2>🔍 ผลตรวจเทียบ Brief</h2>
-<div class="actions"><button id="runBtn">ตรวจทุกสื่อ</button><button class="soft" id="repBtn">คัดลอกรายงานส่งพี่</button><button class="soft" id="saveBtn">บันทึกลงสถิติ</button></div>
+<label style="margin-top:4px">เลือกสื่อที่ต้องการตรวจ</label><div id="selBox"></div>
+<div class="actions"><button id="runBtn">ตรวจสื่อที่เลือก</button><button class="soft" id="repBtn">คัดลอกรายงานส่งพี่</button><button class="soft" id="saveBtn">บันทึกลงสถิติ</button></div>
 <div id="out"></div></div>
 <div class="card"><h2>📊 สถิติของเครื่องนี้</h2><div id="stats"></div><div class="actions"><button class="soft" id="resetLog">ล้างสถิติ</button></div></div>
 </section>
 </main>
 
-<div id="mas" role="button" aria-label="น้องวีเช็ค"><div id="bub"></div><div class="in">
+<div id="mas" role="button" aria-label="น้องวีเช็ค"><div id="bub"></div><div class="flip"><div class="in">
 <svg viewBox="0 0 80 100" width="64" height="80" aria-hidden="true">
 <g class="leg l"><rect x="29" y="74" width="9" height="20" rx="4" fill="#2b2b2b"/></g>
 <g class="leg r"><rect x="42" y="74" width="9" height="20" rx="4" fill="#2b2b2b"/></g>
@@ -127,38 +158,81 @@ nav button span{font-size:1.3rem;line-height:1.2}nav button.on{background:var(--
 <g class="eyes"><ellipse cx="32" cy="36" rx="2.4" ry="3.2" fill="#222"/><ellipse cx="48" cy="36" rx="2.4" ry="3.2" fill="#222"/></g>
 <circle cx="27" cy="42" r="3" fill="#ff9aa8" opacity=".7"/><circle cx="53" cy="42" r="3" fill="#ff9aa8" opacity=".7"/>
 <path d="M36 44Q40 48 44 44" stroke="#c0594a" fill="none" stroke-width="1.8" stroke-linecap="round"/>
-</svg></div></div>
+</svg></div></div></div>
 
-<nav id="nav">
-<button data-go="brief"><span>📝</span>Brief</button><button data-go="fill"><span>✏️</span>กรอก</button><button data-go="img"><span>🖼️</span>รูป</button><button data-go="cap"><span>💬</span>แคปชั่น</button><button data-go="res"><span>🔍</span>ผลตรวจ</button>
+<nav id="nav" hidden>
+<button data-go="lib" data-m="m"><span>📚</span>คลัง</button><button data-go="brief" data-m="m"><span>📝</span>Brief</button>
+<button data-go="fill" data-m="j"><span>✏️</span>กรอก</button><button data-go="img" data-m="j"><span>🖼️</span>รูป</button><button data-go="cap" data-m="j"><span>💬</span>แคปชั่น</button><button data-go="res" data-m="j"><span>🔍</span>ผลตรวจ</button>
 </nav>
 
-<script>
-(function(){
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {initializeFirestore,doc,getDoc,onSnapshot,writeBatch,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 var $=function(i){return document.getElementById(i)};
+var db=null;
+try{db=initializeFirestore(initializeApp({apiKey:"AIzaSyDCcdbkujhnSwVKyw920tfID1LH0pb4V0k",authDomain:"v-check-bd2e0.firebaseapp.com",projectId:"v-check-bd2e0",appId:"1:853683143245:web:fc42422e532f94cac8d204"}),{experimentalAutoDetectLongPolling:true})}catch(e){}
+
 var T=["Head LINE","รายละเอียด","ชื่อสินค้า","รูปสินค้า/สื่อ","วัน-เวลา"];
 var AK=["Head LINE ในรูปตรง","ราคา/เงื่อนไขในรูปตรง","ชื่อสินค้าในรูปตรง","รูปสินค้าในรูปตรง","วัน-เวลาในรูปตรง"];
 var ICON={ok:"✅",bad:"❌",skip:"⏳"},TAG={ok:"ผ่าน",bad:"ต้องแก้",skip:"ยังไม่ครบ"};
-var TIPS={brief:"พี่เลี้ยงใส่คำตอบที่ถูกต้องนะ 📝",fill:"พิมพ์ให้เหมือนโพสต์จริงนะ ✏️",img:"แนบรูปได้ไม่จำกัดเลย 🖼️",cap:"เขียนอิสระได้ พี่จะอ่านให้ 💬",res:"กดตรวจเลย ไม่ต้องกลัวนะ 🔍"};
+var TIPS={home:"เลือกทางเข้าได้เลย 🐣",lib:"เปิดโปรด้วย PIN นะ 🔐",brief:"พี่เลี้ยงใส่คำตอบที่ถูกต้องนะ 📝",fill:"พิมพ์ให้เหมือนโพสต์จริงนะ ✏️",img:"แนบรูปได้ไม่จำกัดเลย 🖼️",cap:"เขียนอิสระได้ พี่จะอ่านให้ 💬",res:"เลือกสื่อแล้วกดตรวจเลย 🔍"};
 var CHEER=["สู้ๆ นะ 💪","ค่อยๆ ทำก็ได้ 🌱","เก่งมากเลย 🎉","น้องวีเช็คอยู่ข้างๆ นะ 🐣"];
-var S={id:rid(),p:"",M:[],cur:0},locked=false,entries=[],view="brief";
-function rid(){return Math.random().toString(36).slice(2,8)}
-function nm(){return {id:rid(),n:"",h:"",d:"",r:"",t:"",j:{h:"",d:"",r:"",t:"",c:"",pi:{},ai:[],ck:{}}}}
+function rid(n){var a=new Uint8Array(n),s="";crypto.getRandomValues(a);a.forEach(function(x){s+=("0"+x.toString(36)).slice(-2)});return s}
+function nm(){return {id:rid(3),n:"",h:"",d:"",r:"",t:"",j:{h:"",d:"",r:"",t:"",c:"",pi:{},ai:[],ck:{}}}}
+function fresh(){return {id:rid(7),p:"",M:[nm()],cur:0,cloud:false}}
+var S=fresh(),mode="home",view="home",entries=[],unsub=null,pinMem="",pend=null,sel={},selT=false;
+
 function clean(s){return (s||"").replace(/\s+/g," ").trim()}
 function lines(s){return (s||"").split(/\n/).map(clean).filter(Boolean)}
 function toks(s){return (s||"").toLowerCase().match(/[a-z]+|\d+|[ก-๙]+/g)||[]}
 function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i})}
 function teq(a,b){var A=uniq(toks(a)),B=uniq(toks(b));return A.every(function(x){return B.indexOf(x)>-1})&&B.every(function(x){return A.indexOf(x)>-1})}
-function enc(o){try{return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}catch(e){return ""}}
-function dec(s){try{s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))))}catch(e){return null}}
+function sha(s){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,"0")}).join("")})}
 function cur(){return S.M[S.cur]}
-function save(){try{localStorage.setItem("vc_proj",JSON.stringify(S,function(k,v){return(k==="pi"||k==="ai")?undefined:v}))}catch(e){}}
-function restore(){try{var c=JSON.parse(localStorage.getItem("vc_proj")||"null");if(c&&c.M&&c.M.length){c.M.forEach(function(m){m.j=m.j||{h:"",d:"",r:"",t:"",c:"",ck:{}};m.j.pi={};m.j.ai=[];m.j.ck=m.j.ck||{}});S=c;return true}}catch(e){}return false}
+function linkOf(id){return location.href.split("#")[0]+"#p="+id}
+function parseId(s){var m=(s||"").match(/p=([a-z0-9]+)/);if(m)return m[1];var t=clean(s);return /^[a-z0-9]{6,}$/.test(t)?t:""}
+function conn(t){$("conn").textContent=t||""}
 function copy(text,btn){var o=btn.textContent;
   function done(){btn.textContent="คัดลอกแล้ว 🎉";setTimeout(function(){btn.textContent=o},1600)}
   function fb(){var t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();try{document.execCommand("copy");done()}catch(e){btn.textContent="คัดลอกไม่ได้"}document.body.removeChild(t)}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fb)}else fb()}
 function say(t){var b=$("bub");b.textContent=t;b.style.display="block";clearTimeout(say.k);say.k=setTimeout(function(){b.style.display="none"},3000)}
+
+/* storage */
+function loadJ(id){try{return JSON.parse(localStorage.getItem("vc_j_"+id)||"{}")}catch(e){return{}}}
+function save(){try{var o=loadJ(S.id);S.M.forEach(function(m){o[m.id]={h:m.j.h,d:m.j.d,r:m.j.r,t:m.j.t,c:m.j.c,ck:m.j.ck}});localStorage.setItem("vc_j_"+S.id,JSON.stringify(o))}catch(e){}}
+function libGet(){try{return JSON.parse(localStorage.getItem("vc_lib")||"[]")}catch(e){return[]}}
+function libSet(l){try{localStorage.setItem("vc_lib",JSON.stringify(l.slice(0,30)))}catch(e){}}
+function libAdd(id,t){var l=libGet().filter(function(x){return x.id!==id});l.unshift({id:id,t:t||"(ไม่มีชื่อ)"});libSet(l)}
+function libDel(id){libSet(libGet().filter(function(x){return x.id!==id}));renderLib()}
+function askPin(id,name){pend={id:id,name:name};$("askName").textContent=name;$("pinAsk").hidden=false;$("newForm").hidden=true;$("libPin").value="";$("libMsg").textContent="";$("libPin").focus()}
+function renderLib(){var b=$("lib");b.textContent="";var l=libGet();
+  if(!l.length){b.innerHTML='<p class="note">ยังไม่มีโปรในรายการ กด + โปรใหม่ หรือเปิดด้วยรหัสด้านล่าง</p>';return}
+  l.forEach(function(x){var r=document.createElement("div");r.className="lib";var t=document.createElement("span");t.textContent=x.t;
+    var a=document.createElement("div");a.className="actions";a.style.margin="0";
+    var o=document.createElement("button");o.className="soft";o.textContent="เปิด";o.onclick=function(){askPin(x.id,x.t)};
+    var c=document.createElement("button");c.className="soft";c.textContent="ลิงก์";c.onclick=function(){copy(linkOf(x.id),c)};
+    var d=document.createElement("button");d.className="soft";d.textContent="✕";d.setAttribute("aria-label","เอาออกจากรายการ");d.onclick=function(){libDel(x.id)};
+    a.appendChild(o);a.appendChild(c);a.appendChild(d);r.appendChild(t);r.appendChild(a);b.appendChild(r)})}
+
+/* cloud */
+function applyCloud(d){var old={},saved=loadJ(S.id);S.M.forEach(function(m){old[m.id]=m});S.p=d.title||"";
+  S.M=(d.media||[]).map(function(x){var m=old[x.i];
+    if(!m){m=nm();m.id=x.i;var sv=saved[x.i];if(sv){["h","d","r","t","c"].forEach(function(k){m.j[k]=sv[k]||""});m.j.ck=sv.ck||{}}}
+    m.n=x.n||"";m.h=x.h||"";m.d=x.d||"";m.r=x.r||"";m.t=x.t||"";return m});
+  if(!S.M.length)S.M=[nm()];if(S.cur>=S.M.length)S.cur=0;S.cloud=true;all()}
+function sub(id){if(!db){conn("เชื่อมต่อคลังไม่ได้ ลองรีเฟรชหน้านะ");return}if(unsub)unsub();
+  unsub=onSnapshot(doc(db,"promos",id),function(s){if(!s.exists()){conn("ไม่พบโปรนี้ในคลัง ตรวจลิงก์อีกครั้งนะ");return}conn("");if(mode==="junior")applyCloud(s.data())},
+    function(e){conn("เชื่อมต่อคลังไม่ได้ ("+((e&&e.code)||"")+")")})}
+function put(id,pin,title,media,isNew){return sha(id+":"+pin).then(function(h){var b=writeBatch(db);
+  if(isNew)b.set(doc(db,"secrets",id),{h:h});
+  b.set(doc(db,"proofs",id),{p:h,t:serverTimestamp()});
+  b.set(doc(db,"promos",id),{title:(title||"").slice(0,120),media:media.slice(0,20),updated:serverTimestamp()});
+  return b.commit()})}
+function briefs(){return S.M.map(function(m){return{i:m.id,n:m.n,h:m.h,d:m.d,r:m.r,t:m.t}})}
+function showLink(){$("shareUrl").value=linkOf(S.id);$("shareBox").hidden=false;
+  $("lineLink").href="https://line.me/R/msg/text/?"+encodeURIComponent("📋 Brief โปร "+S.p+"\nกดเปิดแล้วกรอกตาม Brief ได้เลย (ใช้ลิงก์นี้ลิงก์เดียว สื่อใหม่จะขึ้นเอง) 👉 "+linkOf(S.id))}
 
 /* diff */
 function lcs(a,b){var A=Array.from(a),B=Array.from(b),n=A.length,m=B.length,w=m+1,i,j;
@@ -171,11 +245,10 @@ function lcs(a,b){var A=Array.from(a),B=Array.from(b),n=A.length,m=B.length,w=m+
 function paint(el,ch,fl){if(!fl){el.textContent=ch.join("");return}
   var s="",f=null;function flush(){if(!s)return;if(f){var k=document.createElement("mark");k.textContent=s;el.appendChild(k)}else el.appendChild(document.createTextNode(s));s=""}
   ch.forEach(function(c,i){var x=!fl[i];if(x!==f){flush();f=x}s+=c});flush()}
-function line(lb,txt,ch,fl){var d=document.createElement("div"),l=document.createElement("span"),v=document.createElement("span");l.className="lb";l.textContent=lb;
-  if(ch)paint(v,ch,fl);else v.textContent=txt;d.appendChild(l);d.appendChild(v);return d}
+function line(lb,ch,fl){var d=document.createElement("div"),l=document.createElement("span"),v=document.createElement("span");l.className="lb";l.textContent=lb;paint(v,ch,fl);d.appendChild(l);d.appendChild(v);return d}
 function detNode(d){var w=document.createElement("div");w.className="det";
   if(d.note){w.textContent="• "+d.note+(d.a?": "+d.a:d.b?": "+d.b:"");return w}
-  var r=lcs(d.a,d.b);w.appendChild(line("พี่: ",d.a,r.A,r.fa));w.appendChild(line("น้อง: ",d.b,r.B,r.fb));return w}
+  var r=lcs(d.a,d.b);w.appendChild(line("พี่: ",r.A,r.fa));w.appendChild(line("น้อง: ",r.B,r.fb));return w}
 
 /* compare */
 function cmpT(t,label,ex,got,loose){ex=clean(ex);got=clean(got);if(!ex)return null;
@@ -198,18 +271,24 @@ function cmpI(m){var E=lines(m.r),j=m.j;
   return miss.length?{t:3,s:"bad",m:"รูปยังไม่ครบ",det:miss.map(function(x){return{note:x}})}:{t:3,s:"ok",m:"ตรวจรูปสินค้าและรูปสื่อครบแล้ว"}}
 function runM(m){var j=m.j,it=[cmpT(0,"Head LINE",m.h,j.h),cmpT(1,"รายละเอียด",m.d,j.d),cmpP(m),cmpI(m),cmpT(4,"วัน-เวลา",m.t,j.t,teq)].filter(Boolean);
   return it.length?it:[{t:0,s:"skip",m:"พี่เลี้ยงยังไม่ได้ใส่ Brief ของสื่อนี้"}]}
-
-function show(){var out=$("out");out.textContent="";entries=[];var bad=0,skip=0;
-  S.M.forEach(function(m,i){var items=runM(m),h=document.createElement("h2");h.textContent="📍 "+(m.n||"สื่อ "+(i+1));h.style.marginTop="14px";out.appendChild(h);
+function picked(){return S.M.filter(function(m){return sel[m.id]})}
+function mname(m){return m.n||"สื่อ "+(S.M.indexOf(m)+1)}
+function renderSel(){var b=$("selBox");b.textContent="";if(!selT){sel={};sel[cur().id]=true}
+  S.M.forEach(function(m){var l=document.createElement("label"),c=document.createElement("input"),s=document.createElement("span");l.className="chk";c.type="checkbox";c.checked=!!sel[m.id];
+    c.onchange=function(){selT=true;sel[m.id]=c.checked};s.textContent=mname(m);l.appendChild(c);l.appendChild(s);b.appendChild(l)})}
+function show(){var out=$("out");out.textContent="";entries=[];var L=picked();
+  if(!L.length){out.innerHTML='<p class="note">ติ๊กเลือกสื่อที่ต้องการตรวจก่อนนะ</p>';return}
+  var bad=0,skip=0;
+  L.forEach(function(m){var items=runM(m),h=document.createElement("h2");h.textContent="📍 "+mname(m);h.style.marginTop="14px";out.appendChild(h);
     var errs=[];items.forEach(function(x){if(x.s==="bad"){bad++;errs.push(x.t)}if(x.s==="skip")skip++;
       var d=document.createElement("div");d.className="item "+x.s;var b=document.createElement("b"),p=document.createElement("p");
       b.textContent=ICON[x.s]+" "+T[x.t]+" · "+TAG[x.s];p.textContent=x.m;d.appendChild(b);d.appendChild(p);(x.det||[]).forEach(function(z){d.appendChild(detNode(z))});out.appendChild(d)});
-    entries.push({n:(S.p||"-")+" / "+(m.n||"สื่อ "+(i+1)),e:errs})});
+    entries.push({n:(S.p||"-")+" / "+mname(m),e:errs})});
   var v=document.createElement("div");
   if(bad){v.className="verdict bad";v.textContent="เกือบแล้ว! แก้อีก "+bad+" จุดนะ 💪"}else if(skip){v.className="verdict skip";v.textContent="ยังกรอกไม่ครบ "+skip+" ข้อ ค่อยๆ ไปต่อนะ 🌱"}else{v.className="verdict ok";v.textContent="เก่งมาก! ผ่านทุกข้อ ส่งให้พี่ตรวจได้เลย 🎉"}
   out.insertBefore(v,out.firstChild);say(bad?"แก้อีกนิดเดียวนะ 💪":skip?"กรอกต่ออีกหน่อยนะ 🌱":"ผ่านหมดเลย! 🎉")}
-function report(){var t="🐣 รายงานโพสต์: "+(S.p||"-")+"\n";
-  S.M.forEach(function(m,i){t+="\n— "+(m.n||"สื่อ "+(i+1))+" —\n";
+function report(){var L=picked();if(!L.length)L=[cur()];var t="🐣 รายงานโพสต์: "+(S.p||"-")+"\n";
+  L.forEach(function(m){t+="\n— "+mname(m)+" —\n";
     runM(m).forEach(function(x){t+=ICON[x.s]+" "+T[x.t]+": "+x.m+"\n";(x.det||[]).forEach(function(d){t+="   "+(d.note?d.note+(d.a?": "+d.a:d.b?": "+d.b:""):"พี่: "+d.a+" | น้อง: "+d.b)+"\n"})});
     t+="📝 แคปชั่น:\n"+(m.j.c.trim()||"(ยังไม่ได้เขียน)")+"\n"});return t}
 
@@ -239,53 +318,80 @@ function renderImgs(){var m=cur(),box=$("prodImgs");box.textContent="";var E=lin
 
 /* ui */
 var BMAP={bName:"n",bHead:"h",bDetail:"d",bProd:"r",bDate:"t"},JMAP={jHead:"h",jDetail:"d",jProd:"r",jDate:"t",jCap:"c"};
+function dirty(){$("shareMsg").textContent="✏️ มีการแก้ไขที่ยังไม่ได้บันทึกขึ้นคลัง"}
 function fields(){var m=cur();Object.keys(BMAP).forEach(function(i){$(i).value=m[BMAP[i]]});Object.keys(JMAP).forEach(function(i){$(i).value=m.j[JMAP[i]]});$("pName").value=S.p;capInfo()}
-function capInfo(){var c=cur().j.c;$("capN").textContent=c.length+" ตัวอักษร";var t="รบกวนพี่ช่วยตรวจแคปชั่นใต้โพสต์ให้หน่อยค่ะ 🙏\n["+(cur().n||"สื่อ "+(S.cur+1))+"]\n"+c;$("capLine").href="https://line.me/R/msg/text/?"+encodeURIComponent(t);$("capLine").dataset.t=t}
-function tabs(){var b=$("tabs");b.textContent="";S.M.forEach(function(m,i){var x=document.createElement("button");x.className="chip soft";x.setAttribute("aria-pressed",i===S.cur);x.textContent=(i===S.cur?"📍 ":"")+(m.n||"สื่อ "+(i+1));x.onclick=function(){S.cur=i;all()};b.appendChild(x)})}
-function all(){tabs();fields();renderImgs();save()}
-function go(v){view=v;Array.prototype.forEach.call(document.querySelectorAll(".view"),function(s){s.classList.toggle("on",s.id==="v-"+v)});
-  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.classList.toggle("on",b.dataset.go===v)});say(TIPS[v]);window.scrollTo(0,0)}
-function lock(on){locked=on;Object.keys(BMAP).concat("pName").forEach(function(i){$(i).readOnly=on});$("mgmt").hidden=on;$("shareBtn").hidden=on;$("demoBtn").hidden=on;$("lockBtn").textContent=on?"🔓 ปลดล็อกเพื่อแก้ Brief":"🔒 ล็อก Brief"}
+function capInfo(){var c=cur().j.c;$("capN").textContent=c.length+" ตัวอักษร";var t="รบกวนพี่ช่วยตรวจแคปชั่นใต้โพสต์ให้หน่อยค่ะ 🙏\n["+mname(cur())+"]\n"+c;$("capLine").href="https://line.me/R/msg/text/?"+encodeURIComponent(t);$("capLine").dataset.t=t}
+function tabs(){var b=$("tabs");b.textContent="";S.M.forEach(function(m,i){var x=document.createElement("button");x.className="chip soft";x.setAttribute("aria-pressed",i===S.cur);x.textContent=(i===S.cur?"📍 ":"")+mname(m);x.onclick=function(){S.cur=i;all()};b.appendChild(x)})}
+function chrome(){$("nav").hidden=mode==="home";
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.hidden=b.dataset.m!==(mode==="mentor"?"m":"j")});
+  $("tabsCard").hidden=mode==="home"||(mode==="mentor"&&view!=="brief");
+  $("topBar").hidden=mode==="home";$("homeBtn").textContent=mode==="mentor"?"🔒 ออกจากหน้าพี่เลี้ยง":"🏠 หน้าแรก"}
+function all(){tabs();fields();renderImgs();renderSel();renderLib();chrome();save()}
+function go(v){var ok={home:["home"],mentor:["lib","brief"],junior:["fill","img","cap","res"]}[mode];if(ok.indexOf(v)<0)v=ok[0];view=v;
+  Array.prototype.forEach.call(document.querySelectorAll(".view"),function(s){s.classList.toggle("on",s.id==="v-"+v)});
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.classList.toggle("on",b.dataset.go===v)});
+  chrome();if(v==="res")renderSel();if(v==="lib")renderLib();say(TIPS[v]);window.scrollTo(0,0)}
+function enter(m,v){mode=m;selT=false;go(v)}
+function clearHash(){try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}}
+function join(id){S={id:id,p:"",M:[nm()],cur:0,cloud:true};mode="junior";try{history.replaceState(null,"","#p="+id)}catch(e){}sub(id);all();enter("junior","fill")}
+function addMedia(n){var m=nm();m.n=n;S.M.push(m);S.cur=S.M.length-1;dirty();all()}
 
-Object.keys(BMAP).forEach(function(i){$(i).addEventListener("input",function(){cur()[BMAP[i]]=this.value;if(i==="bName")tabs();if(i==="bProd")renderImgs();save()})});
+Object.keys(BMAP).forEach(function(i){$(i).addEventListener("input",function(){cur()[BMAP[i]]=this.value;if(i==="bName"){tabs();renderSel()}if(i==="bProd")renderImgs();dirty();save()})});
 Object.keys(JMAP).forEach(function(i){$(i).addEventListener("input",function(){cur().j[JMAP[i]]=this.value;if(i==="jCap")capInfo();save()})});
-$("pName").addEventListener("input",function(){S.p=this.value;save()});
+$("pName").addEventListener("input",function(){S.p=this.value;dirty()});
 document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
+document.querySelectorAll(".pre").forEach(function(b){b.onclick=function(){addMedia(b.dataset.n)}});
 $("artIn").onchange=function(){addFiles(this.files,cur().j.ai,function(){renderImgs()});this.value=""};
-$("addBtn").onclick=function(){S.M.push(nm());S.cur=S.M.length-1;all()};
-$("dupBtn").onclick=function(){var m=nm(),c=cur();["n","h","d","r","t"].forEach(function(k){m[k]=c[k]});m.n=(c.n||"สื่อ")+" (สำเนา)";S.M.push(m);S.cur=S.M.length-1;all()};
-$("delBtn").onclick=function(){if(S.M.length<2)return;S.M.splice(S.cur,1);S.cur=Math.max(0,S.cur-1);all()};
-$("lockBtn").onclick=function(){lock(!locked)};
-$("shareBtn").onclick=function(){
-  if(!S.M.some(function(m){return m.h||m.d||m.r})){$("shareMsg").textContent="ใส่ Brief อย่างน้อย 1 สื่อก่อนนะ";return}
-  var u=location.href.split("#")[0]+"#b="+enc({i:S.id,p:S.p,m:S.M.map(function(m){return{i:m.id,n:m.n,h:m.h,d:m.d,r:m.r,t:m.t}})});
-  $("shareUrl").value=u;$("shareBox").hidden=false;
-  $("shareMsg").textContent="ส่งลิงก์นี้ให้น้อง เพิ่มสื่อใหม่เมื่อไหร่ กดสร้างลิงก์ใหม่ส่งอีกครั้ง น้องเปิดแล้วระบบรวมเข้ากับโปรเดิมให้"+(u.length>3500?" (ลิงก์ค่อนข้างยาว ถ้าส่ง LINE ไม่ได้ ให้คัดลอกลิงก์ไปวางเอง)":"");
-  $("lineLink").href="https://line.me/R/msg/text/?"+encodeURIComponent("📋 Brief โปร "+S.p+" ("+S.M.length+" สื่อ)\nกดเปิดแล้วกรอกตาม Brief ได้เลย 👉 "+u)};
+$("dupBtn").onclick=function(){var m=nm(),c=cur();["n","h","d","r","t"].forEach(function(k){m[k]=c[k]});m.n=(c.n||"สื่อ")+" (สำเนา)";S.M.push(m);S.cur=S.M.length-1;dirty();all()};
+$("delBtn").onclick=function(){if(S.M.length<2)return;S.M.splice(S.cur,1);S.cur=Math.max(0,S.cur-1);dirty();all()};
+
+$("goJunior").onclick=function(){var id=parseId($("codeIn").value);if(!id){$("homeMsg").textContent="ไม่พบรหัสโปร ลองวางลิงก์จากพี่อีกครั้งนะ";return}$("homeMsg").textContent="";join(id)};
+$("goMentor").onclick=function(){S=fresh();enter("mentor","lib");all()};
+$("homeBtn").onclick=function(){pinMem="";pend=null;if(unsub){unsub();unsub=null}clearHash();conn("");S=fresh();$("shareBox").hidden=true;$("shareMsg").textContent="";enter("home","home");all()};
+
+$("libCancel").onclick=function(){$("pinAsk").hidden=true;pend=null};
+$("libGo").onclick=function(){if(!pend)return;if(!db){$("libMsg").textContent="เชื่อมต่อคลังไม่ได้";return}
+  var pin=$("libPin").value,id=pend.id;if(pin.length<6){$("libMsg").textContent="PIN อย่างน้อย 6 ตัวนะ";return}
+  $("libMsg").textContent="กำลังตรวจ PIN...";
+  getDoc(doc(db,"promos",id)).then(function(s){
+    if(!s.exists()){$("libMsg").textContent="ไม่พบโปรนี้ในคลัง";return}
+    var d=s.data();
+    return put(id,pin,d.title,d.media||[],false).then(function(){
+      pinMem=pin;S={id:id,p:"",M:[],cur:0,cloud:true};applyCloud(d);libAdd(id,S.p);
+      $("pinAsk").hidden=true;$("libPin").value="";$("libMsg").textContent="";showLink();$("shareMsg").textContent="";all();enter("mentor","brief")})})
+  .catch(function(e){$("libMsg").textContent="PIN ไม่ถูกต้อง หรือเชื่อมต่อคลังไม่ได้ ("+((e&&e.code)||"")+")"})};
+$("newBtn").onclick=function(){$("newForm").hidden=false;$("pinAsk").hidden=true;$("newTitle").focus()};
+$("newCancel").onclick=function(){$("newForm").hidden=true};
+$("newGo").onclick=function(){var t=$("newTitle").value.trim(),p=$("newPin").value;
+  if(!t){$("libMsg").textContent="ใส่ชื่อโปรก่อนนะ";return}if(p.length<6){$("libMsg").textContent="PIN อย่างน้อย 6 ตัวนะ";return}
+  S=fresh();S.p=t;pinMem=p;$("newForm").hidden=true;$("newTitle").value="";$("newPin").value="";$("libMsg").textContent="";
+  $("shareBox").hidden=true;$("shareMsg").textContent="✏️ ยังไม่ได้บันทึกขึ้นคลัง";all();enter("mentor","brief")};
+$("openGo").onclick=function(){var id=parseId($("openCode").value);if(!id){$("libMsg").textContent="ไม่พบรหัสโปร ลองวางใหม่นะ";return}$("openCode").value="";askPin(id,"โปรรหัส "+id)};
+
+$("saveCloud").onclick=function(){var msg=$("shareMsg");
+  if(!db){msg.textContent="เชื่อมต่อคลังไม่ได้";return}
+  if(!pinMem){msg.textContent="ไม่พบ PIN กรุณาออกแล้วเข้าหน้าพี่เลี้ยงใหม่";return}
+  if(!S.p.trim()){msg.textContent="ใส่ชื่อโปรโมชั่นก่อนนะ";return}
+  msg.textContent="กำลังบันทึก...";
+  put(S.id,pinMem,S.p,briefs(),!S.cloud).then(function(){S.cloud=true;libAdd(S.id,S.p);renderLib();showLink();msg.textContent="บันทึกขึ้นคลังแล้ว ☁️ น้องเปิดลิงก์เดิมจะเห็นข้อมูลล่าสุดเอง"})
+  .catch(function(e){msg.textContent="บันทึกไม่สำเร็จ: PIN ไม่ตรง หรือยังไม่ได้ตั้งกฎ หรือไม่มีอินเทอร์เน็ต ("+((e&&e.code)||"")+")"})};
 $("copyLink").onclick=function(){copy($("shareUrl").value,this)};
 $("capCopy").onclick=function(){copy($("capLine").dataset.t||"",this)};
 $("runBtn").onclick=show;
 $("repBtn").onclick=function(){copy(report(),this)};
 $("saveBtn").onclick=function(){if(!entries.length)return;var l=getLog();entries.forEach(function(e){l.push(e)});setLog(l);stats();var b=this;b.textContent="บันทึกแล้ว 🎉";setTimeout(function(){b.textContent="บันทึกลงสถิติ"},1600)};
 $("resetLog").onclick=function(){setLog([]);stats()};
-$("clearBtn").onclick=function(){S={id:rid(),p:"",M:[nm()],cur:0};lock(false);$("banner").hidden=true;$("shareBox").hidden=true;$("out").textContent="";try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}all()};
 $("demoBtn").onclick=function(){
-  var a=nm(),b=nm();a.n="LINE OA";a.h="Jingle Bell Deal";a.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.-";a.r="เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง";a.t="24 Dec 26 - 3 Jan 27";
+  var a=nm(),b=nm();a.n="Facebook";a.h="Jingle Bell Deal";a.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.-";a.r="เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง";a.t="24 Dec 26 - 3 Jan 27";
   b.n="จอ LED";b.h="Jingle Bell Deal";b.d="2 ชิ้น 99.-";b.r=a.r;b.t=a.t;
   a.j.h="Jingle Bell Deal";a.j.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 140.-";a.j.r="เรดเวลเวทครีมชีสชิ้นโอะปัง\nเมลอนชิโอะปัง";a.j.t="24 Dec 26 - 4 Jan 27";
   a.j.c="🎄🔔 ดีลสุดคุ้มต้อนรับคริสต์มาส!\nซื้อ 2 ชิ้น เพียง 99.- 💥\n📅 24 ธ.ค. - 3 ม.ค.\n#JingleBellDeal";
-  b.j.h="Jingle Bell";b.j.d="2 ชิ้น 99.-";b.j.r=a.r;b.j.t=a.t;S.p="Jingle Bell Deal";S.M=[a,b];S.cur=0;all()};
-
-var h=location.hash;
-if(h.indexOf("#b=")===0){var o=dec(h.slice(3));
-  if(o&&o.m&&o.m.length){restore();var mine=S.id===o.i,old={};S.M.forEach(function(m){old[m.id]=m});
-    S.M=o.m.map(function(x){var m=(mine&&old[x.i])||nm();m.id=x.i;m.n=x.n||"";m.h=x.h||"";m.d=x.d||"";m.r=x.r||"";m.t=x.t||"";return m});
-    S.id=o.i;S.p=o.p||"";S.cur=0;$("banner").hidden=false;lock(true);view="fill"}}
-else if(!restore()){S.M=[nm()]}
-if(!locked)lock(false);
-all();stats();go(view);
+  b.j.h="Jingle Bell";b.j.d="2 ชิ้น 99.-";b.j.r=a.r;b.j.t=a.t;S.p="Jingle Bell Deal (ตัวอย่าง)";S.M=[a,b];S.cur=0;dirty();all()};
 $("mas").onclick=function(){var e=$("mas");e.classList.remove("jump");void e.offsetWidth;e.classList.add("jump");say(CHEER[Math.floor(Math.random()*CHEER.length)])};
-})();
+
+var hm=location.hash.match(/^#p=([a-z0-9]+)$/);
+if(hm){S={id:hm[1],p:"",M:[nm()],cur:0,cloud:true};mode="junior";view="fill";sub(S.id)}
+all();stats();go(view);
 </script>
 </body>
 </html>
