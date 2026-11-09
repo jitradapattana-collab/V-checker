@@ -3,317 +3,289 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>น้องเช็กโพสต์ – ตรวจโพสต์ก่อนลงโซเชียล</title>
+<title>น้องวีเช็ค</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap">
 <style>
-:root{--bg:#fff4ee;--card:#fffdfb;--ink:#3d2c3a;--mute:#7a6677;--line:#f4d3cf;--pink:#ff8fab;--pinkink:#3d2c3a;--lav:#efe6ff;--ok:#127a53;--okbg:#d9f6e8;--bad:#c0264a;--badbg:#ffe0e7;--warn:#8a5a00;--warnbg:#fff0c2;--inp:#fff7f3;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root{--bg:#2a2030;--card:#362a3d;--ink:#fbeff6;--mute:#c9b6c6;--line:#54405c;--pink:#ff8fab;--pinkink:#2a2030;--lav:#46385a;--ok:#7ee0b2;--okbg:#1f4034;--bad:#ff9bb3;--badbg:#4d2330;--warn:#ffd978;--warnbg:#4a3a12;--inp:#2a2030}}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#fff4ee;--card:#fffdfb;--ink:#3d2c3a;--mute:#7a6677;--line:#f4d3cf;--pink:#ff8fab;--pinkink:#3d2c3a;--lav:#efe6ff;--ok:#127a53;--okbg:#d9f6e8;--bad:#c0264a;--badbg:#ffe0e7;--warn:#8a5a00;--warnbg:#fff0c2;--inp:#fff7f3}
+@media (prefers-color-scheme:dark){:root{--bg:#2a2030;--card:#362a3d;--ink:#fbeff6;--mute:#c9b6c6;--line:#54405c;--lav:#46385a;--ok:#7ee0b2;--okbg:#1f4034;--bad:#ff9bb3;--badbg:#4d2330;--warn:#ffd978;--warnbg:#4a3a12;--inp:#2a2030;--pinkink:#2a2030}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mali","Noto Sans Thai",system-ui,sans-serif;line-height:1.6;font-size:16px}
-main{max-width:660px;margin:0 auto;padding:18px 14px 56px}
-header{text-align:center;margin-bottom:8px}
-.mascot{font-size:3rem;line-height:1}
-h1{font-size:1.6rem;margin:4px 0 2px;font-weight:700}
-.sub{color:var(--mute);margin:0;font-size:.95rem}
-.card,details{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px;margin:14px 0}
-summary{font-weight:700;font-size:1.05rem;cursor:pointer}
-h2{font-size:1.08rem;margin:0 0 4px;font-weight:700}
-.lead{color:var(--mute);font-size:.9rem;margin:0 0 8px}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mali","Noto Sans Thai",system-ui,sans-serif;line-height:1.6;padding-top:env(safe-area-inset-top,0px)}
+main{max-width:660px;margin:0 auto;padding:14px 14px 150px}
+header{text-align:center}h1{font-size:1.5rem;margin:0}.sub{margin:0;color:var(--mute);font-size:.92rem}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:14px;margin:12px 0}
+h2{font-size:1.08rem;margin:0 0 4px}.lead{color:var(--mute);font-size:.9rem;margin:0 0 8px}
 label{display:block;font-weight:600;margin:12px 0 2px;font-size:.95rem}
-.help{display:block;color:var(--mute);font-size:.83rem;font-weight:400;margin-bottom:4px}
+.help{display:block;color:var(--mute);font-size:.82rem;font-weight:400}
 input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--inp);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
 textarea{min-height:80px;resize:vertical}
-input:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:3px solid var(--pink);outline-offset:1px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:440px){.row{grid-template-columns:1fr}}
-button{font:inherit;font-weight:700;border:0;border-radius:999px;background:var(--pink);color:var(--pinkink);padding:10px 18px;cursor:pointer}
-button.soft{background:var(--lav);color:var(--ink)}
-a.btn{display:inline-block;font-weight:700;border-radius:999px;background:var(--lav);color:var(--ink);padding:10px 18px;text-decoration:none}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.tip ul{margin:8px 0 0;padding-left:20px}
-.banner{background:var(--lav);border-radius:16px;padding:10px 14px;margin:12px 0;font-weight:600}
-.bar{height:14px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:6px}
-#barFill{height:100%;width:0;background:var(--pink);border-radius:999px;transition:width .3s}
-.imgbox img{max-width:100%;max-height:240px;border-radius:14px;border:2px solid var(--line);display:block;margin:8px 0}
+input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--pink);outline-offset:1px}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;background:var(--pink);color:var(--pinkink);padding:9px 16px;cursor:pointer}
+button.soft,a.btn{background:var(--lav);color:var(--ink)}
+a.btn{display:inline-block;font-weight:700;border-radius:999px;padding:9px 16px;text-decoration:none}
+.chip[aria-pressed=true]{background:var(--pink);color:var(--pinkink)}
+.actions,#tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}#tabs{margin:0}
+.view{display:none}.view.on{display:block}
+.banner{background:var(--lav);border-radius:16px;padding:10px 14px;margin:10px 0;font-weight:600}
+.th{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.th div{position:relative}.th img{width:84px;height:84px;object-fit:cover;border-radius:12px;border:2px solid var(--line);display:block}
+.th img.big{width:100%;height:auto;max-height:70vh;object-fit:contain}
+.th div:has(img.big){width:100%}
+.th b{position:absolute;top:2px;right:2px;background:var(--bad);color:#fff;border-radius:999px;width:22px;height:22px;text-align:center;font-size:.8rem;cursor:pointer;line-height:22px}
 .chk{display:flex;gap:10px;align-items:flex-start;font-weight:400;margin:6px 0}
 .chk input{margin-top:5px;width:20px;height:20px;flex:none;accent-color:#ff6f95}
-.verdict{border-radius:18px;padding:14px;font-weight:700;font-size:1.1rem;margin-bottom:10px}
-.verdict.ok{background:var(--okbg);color:var(--ok)}.verdict.bad{background:var(--badbg);color:var(--bad)}.verdict.warn{background:var(--warnbg);color:var(--warn)}
+.verdict{border-radius:18px;padding:12px;font-weight:700;margin:8px 0}
+.verdict.ok{background:var(--okbg);color:var(--ok)}.verdict.bad{background:var(--badbg);color:var(--bad)}.verdict.skip{background:var(--warnbg);color:var(--warn)}
 .item{border-left:6px solid var(--line);padding:8px 12px;margin:8px 0;border-radius:0 14px 14px 0;background:var(--inp)}
-.item.ok{border-color:var(--ok)}.item.bad{border-color:var(--bad)}.item.skip,.item.warn{border-color:var(--warn)}
-.item b{display:block}
+.item.ok{border-color:var(--ok)}.item.bad{border-color:var(--bad)}.item.skip{border-color:var(--warn)}
 .item p{margin:2px 0 0;font-size:.9rem;color:var(--mute)}
-table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
-td,th{text-align:left;padding:6px 4px;border-bottom:1px solid var(--line)}
-td:last-child,th:last-child{text-align:right}
-.note{font-size:.84rem;color:var(--mute);margin-top:10px}
-#shareBox{margin-top:12px}
+.det{margin-top:6px;font-size:.92rem;word-break:break-word}.det .lb{color:var(--mute)}
+mark{background:var(--badbg);color:var(--bad);font-weight:700;border-radius:4px}
+table{width:100%;border-collapse:collapse;font-size:.92rem}td,th{text-align:left;padding:5px 4px;border-bottom:1px solid var(--line)}td:last-child,th:last-child{text-align:right}
+.note{font-size:.84rem;color:var(--mute)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--line);display:flex;justify-content:center;gap:2px;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{background:none;color:var(--mute);display:flex;flex-direction:column;align-items:center;font-size:.72rem;padding:4px 8px;border-radius:14px;flex:1;max-width:96px}
+nav button span{font-size:1.3rem;line-height:1.2}nav button.on{background:var(--lav);color:var(--ink)}
+#mas{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));left:0;width:64px;z-index:4;cursor:pointer;animation:walk 24s linear infinite}
+#mas .in{animation:hop .5s ease-in-out infinite}#mas.jump .in{animation:jump .6s ease-out}
+#bub{position:absolute;bottom:84px;left:50%;transform:translateX(-50%);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:4px 10px;font-size:.8rem;white-space:nowrap;display:none}
+.leg{transform-box:fill-box;transform-origin:50% 0}.l{animation:sw .5s ease-in-out infinite}.r{animation:sw .5s ease-in-out infinite reverse}
+.eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+@keyframes walk{0%{left:0;transform:scaleX(1)}49.9%{left:calc(100% - 64px);transform:scaleX(1)}50%{left:calc(100% - 64px);transform:scaleX(-1)}99.9%{left:0;transform:scaleX(-1)}100%{left:0;transform:scaleX(1)}}
+@keyframes hop{50%{transform:translateY(-4px)}}@keyframes jump{40%{transform:translateY(-34px) rotate(-8deg)}}
+@keyframes sw{0%,100%{transform:rotate(14deg)}50%{transform:rotate(-14deg)}}@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){#mas,#mas .in,.leg,.eyes{animation:none}#mas{left:10px}}
 </style>
 </head>
 <body>
 <main>
-<header>
-<div class="mascot">🐣</div>
-<h1>น้องเช็กโพสต์</h1>
-<p class="sub">ค่อยๆ กรอกทีละช่อง ไม่ต้องรีบนะ น้องช่วยเช็กให้เอง</p>
-</header>
+<header><h1>น้องวีเช็ค 🐣</h1><p class="sub">ช่วยเช็กโพสต์ก่อนลงโซเชียล ค่อยๆ ทำทีละหน้านะ</p></header>
+<div id="banner" class="banner" hidden>💌 พี่เลี้ยงส่ง Brief มาแล้ว ไปหน้า “กรอก” ได้เลย <button class="soft" id="lockBtn"></button></div>
+<div class="card"><div id="tabs"></div></div>
 
-<div id="banner" class="banner" hidden>💌 พี่เลี้ยงส่ง Brief มาให้แล้ว ข้ามไปกรอกโพสต์ของเราในขั้น 2 ได้เลย</div>
-
-<details class="tip">
-<summary>💡 จุดที่มักพลาด 5 อย่าง (ดูก่อนลงโพสต์นะ)</summary>
-<ul>
-<li>Head LINE ตรงกับชื่อโปรไหม</li>
-<li>รายละเอียดและราคาถูกต้องไหม</li>
-<li>ชื่อสินค้าสะกดตรงกับ Brief ไหม</li>
-<li>รูปสินค้าตรงกับที่ร่วมรายการไหม</li>
-<li>วัน-เวลาของโปรถูกต้องไหม</li>
-</ul>
-</details>
-
+<section id="v-brief" class="view">
 <div class="card">
-<h2>ความคืบหน้า</h2>
-<div class="bar"><div id="barFill"></div></div>
-<p class="note" id="barTxt" style="margin:6px 0 0"></p>
-</div>
-
-<details id="bSec" open>
-<summary>📝 ขั้น 1 · พี่เลี้ยงใส่ Brief</summary>
-<p class="lead">พี่เลี้ยงพิมพ์ข้อมูลที่ถูกต้องของโปรนี้ แล้วกดสร้างลิงก์ส่งให้น้องทาง LINE</p>
-<label for="bName">ชื่อโปรโมชั่น<span class="help">ตามที่ต้องเขียนใน Head LINE เช่น Jingle Bell Deal</span></label>
-<input type="text" id="bName">
-<label for="bDate">ช่วงวัน-เวลาที่โปรจัด<span class="help">เขียนแบบเดียวกับที่ต้องลงในโพสต์ เช่น 24 Dec 26 - 3 Jan 27</span></label>
-<input type="text" id="bDate">
-<div class="row">
-<div><label for="bPromo">ราคาโปร (บาท)<span class="help">เฉพาะตัวเลข</span></label><input type="text" id="bPromo"></div>
-<div><label for="bNormal">ราคาปกติ<span class="help">คั่นด้วย , ได้</span></label><input type="text" id="bNormal"></div>
-</div>
-<label for="bCond">เงื่อนไขโปร<span class="help">เช่น 2 ชิ้น 99</span></label>
-<input type="text" id="bCond">
-<label for="bProd">ชื่อสินค้าที่ร่วมรายการ<span class="help">บรรทัดละ 1 รายการ สะกดให้ตรงกับที่จะลงโพสต์</span></label>
-<textarea id="bProd"></textarea>
-<label for="bMust">ข้อความที่ต้องมีในโพสต์ <span class="hint">(ถ้ามี)</span><span class="help">เช่น ข้อความท้ายภาพ บรรทัดละ 1 ข้อ</span></label>
-<textarea id="bMust"></textarea>
-<div class="actions"><button id="shareBtn">สร้างลิงก์ส่ง LINE 💌</button></div>
-<div id="shareBox" hidden>
-<label for="shareUrl">ลิงก์ที่มี Brief ฝังอยู่</label>
-<input type="text" id="shareUrl" readonly>
-<div class="actions"><button class="soft" id="copyLink">คัดลอกลิงก์</button><a class="btn" id="lineLink" target="_blank" rel="noopener">เปิด LINE เพื่อส่ง</a></div>
-</div>
+<h2>📝 พี่เลี้ยงใส่ Brief (คำตอบที่ถูกต้อง)</h2>
+<p class="lead">น้องจะกรอกช่องเดียวกันนี้ในหน้า “กรอก” แล้วระบบเทียบให้</p>
+<label for="pName">ชื่อโปรโมชั่น<span class="help">ใช้เป็นชื่อโปรในลิงก์และรายงาน</span></label><input type="text" id="pName">
+<div id="mgmt" class="actions"><button class="soft" id="addBtn">+ เพิ่มสื่อ</button><button class="soft" id="dupBtn">คัดลอกสื่อนี้</button><button class="soft" id="delBtn">ลบสื่อนี้</button></div>
+<label for="bName">ชื่อสื่อ<span class="help">เช่น LINE OA, Facebook, จอ LED</span></label><input type="text" id="bName">
+<label for="bHead">Head LINE</label><input type="text" id="bHead">
+<label for="bDetail">รายละเอียด<span class="help">ราคา เงื่อนไข ข้อความที่ต้องมีในภาพ</span></label><textarea id="bDetail"></textarea>
+<label for="bProd">ชื่อสินค้า<span class="help">บรรทัดละ 1 รายการ</span></label><textarea id="bProd"></textarea>
+<label for="bDate">วัน-เวลา</label><input type="text" id="bDate">
+<div class="actions"><button id="shareBtn">สร้างลิงก์ส่ง LINE 💌</button><button class="soft" id="demoBtn">ใส่ตัวอย่าง</button><button class="soft" id="clearBtn">ล้างทั้งหมด</button></div>
+<div id="shareBox" hidden><label for="shareUrl">ลิงก์ (มีทุกสื่อของโปรนี้)</label><input type="text" id="shareUrl" readonly>
+<div class="actions"><button class="soft" id="copyLink">คัดลอกลิงก์</button><a class="btn" id="lineLink" target="_blank" rel="noopener">เปิด LINE เพื่อส่ง</a></div></div>
 <p class="note" id="shareMsg"></p>
-</details>
+</div></section>
 
-<div class="card">
-<h2>✏️ ขั้น 2 · น้องใส่โพสต์ที่จะลง</h2>
-<p class="lead">พิมพ์ตามที่เขียนอยู่ในโพสต์จริง ทีละช่องก็พอ</p>
-<label for="pHead">Head LINE<span class="help">หัวข้อใหญ่ในภาพหรือโพสต์</span></label>
-<input type="text" id="pHead">
-<label for="pCap">รายละเอียด / แคปชั่น<span class="help">ก๊อปจากแคปชั่นที่เตรียมไว้ได้เลย</span></label>
-<textarea id="pCap"></textarea>
-<label for="pDate">วัน-เวลาที่ระบุในโพสต์</label>
-<input type="text" id="pDate">
-<label for="pImg">รูปชิ้นงาน<span class="help">ไว้ดูเทียบด้วยตา ไม่ถูกส่งไปไหนนะ</span></label>
-<input type="file" id="pImg" accept="image/*">
-<div class="imgbox" id="imgBox"></div>
-<div id="imgChecks"></div>
-<div class="actions">
-<button id="runBtn">ตรวจโพสต์ 🔍</button>
-<button class="soft" id="demoBtn">ใส่ตัวอย่าง</button>
-<button class="soft" id="clearBtn">ล้างทั้งหมด</button>
-</div>
-</div>
+<section id="v-fill" class="view"><div class="card">
+<h2>✏️ น้องกรอกตามที่เขียนในโพสต์จริง</h2>
+<p class="lead">ช่องเหมือนที่พี่ใส่ไว้ พิมพ์ให้เหมือนโพสต์ที่สุด แล้วไปกดตรวจในหน้า “ผลตรวจ”</p>
+<label for="jHead">Head LINE</label><input type="text" id="jHead">
+<label for="jDetail">รายละเอียด</label><textarea id="jDetail"></textarea>
+<label for="jProd">ชื่อสินค้า<span class="help">บรรทัดละ 1 รายการ</span></label><textarea id="jProd"></textarea>
+<label for="jDate">วัน-เวลา</label><input type="text" id="jDate">
+</div></section>
 
-<div class="card" id="result" hidden>
-<h2>🔍 ขั้น 3 · ผลตรวจ</h2>
-<div id="verdict"></div>
-<div id="items"></div>
-<div class="actions"><button id="copyRes">คัดลอกผลส่ง LINE</button><button class="soft" id="saveBtn">บันทึกลงสถิติ</button></div>
-</div>
+<section id="v-img" class="view">
+<div class="card"><h2>🖼️ รูปสินค้า (แยกตามชื่อสินค้า)</h2><p class="lead">แนบกี่รูปก็ได้ แล้วติ๊กเมื่อดูแล้วว่าตรงกับสินค้า รายชื่อมาจาก Brief ของพี่</p><div id="prodImgs"></div></div>
+<div class="card"><h2>🎨 รูปสื่อจริงที่ตกแต่งเสร็จแล้ว</h2><p class="lead">แนบกี่รูปก็ได้ กดรูปเพื่อขยาย</p>
+<input type="file" id="artIn" accept="image/*" multiple><div class="th" id="artTh"></div><div id="artCk"></div></div>
+<p class="note">รูปไม่ถูกอัปโหลดไปที่ไหน แต่ปิดหน้าแล้วรูปจะหาย ข้อความยังอยู่</p>
+</section>
 
-<details>
-<summary>📊 สถิติของเครื่องนี้</summary>
-<div id="stats"></div>
-<div class="actions"><button class="soft" id="resetLog">ล้างสถิติ</button></div>
-<p class="note">สถิติเก็บในเบราว์เซอร์เครื่องนี้เท่านั้น ใช้เทียบจำนวนข้อผิดพลาดก่อนและหลังใช้ระบบสำหรับบทที่ 4</p>
-</details>
+<section id="v-cap" class="view"><div class="card">
+<h2>💬 แคปชั่นที่จะโพสต์</h2>
+<p class="lead">เขียนอิสระได้เลย ไม่มีถูกผิด ส่งให้พี่อ่านและตรวจให้</p>
+<textarea id="jCap" style="min-height:220px"></textarea>
+<p class="note" id="capN"></p>
+<div class="actions"><button id="capCopy">คัดลอกส่งพี่ตรวจ</button><a class="btn" id="capLine" target="_blank" rel="noopener">เปิด LINE</a></div>
+</div></section>
+
+<section id="v-res" class="view">
+<div class="card"><h2>🔍 ผลตรวจเทียบ Brief</h2>
+<div class="actions"><button id="runBtn">ตรวจทุกสื่อ</button><button class="soft" id="repBtn">คัดลอกรายงานส่งพี่</button><button class="soft" id="saveBtn">บันทึกลงสถิติ</button></div>
+<div id="out"></div></div>
+<div class="card"><h2>📊 สถิติของเครื่องนี้</h2><div id="stats"></div><div class="actions"><button class="soft" id="resetLog">ล้างสถิติ</button></div></div>
+</section>
 </main>
+
+<div id="mas" role="button" aria-label="น้องวีเช็ค"><div id="bub"></div><div class="in">
+<svg viewBox="0 0 80 100" width="64" height="80" aria-hidden="true">
+<g class="leg l"><rect x="29" y="74" width="9" height="20" rx="4" fill="#2b2b2b"/></g>
+<g class="leg r"><rect x="42" y="74" width="9" height="20" rx="4" fill="#2b2b2b"/></g>
+<rect x="17" y="52" width="8" height="22" rx="4" fill="#2b2b2b"/>
+<rect x="22" y="50" width="36" height="30" rx="9" fill="#2b2b2b"/>
+<path d="M34 50 L40 64 L46 50Z" fill="#fff"/>
+<rect x="55" y="52" width="8" height="22" rx="4" fill="#2b2b2b"/>
+<rect x="58" y="60" width="18" height="12" rx="2" fill="#cfd4da"/>
+<path d="M11 40Q6 10 40 7Q74 10 69 40Q72 56 62 54L18 54Q8 56 11 40Z" fill="#8a5a3c"/>
+<circle cx="40" cy="34" r="20" fill="#ffd9c2"/>
+<path d="M19 32Q22 9 40 11Q58 9 61 32Q50 19 40 24Q30 19 19 32Z" fill="#8a5a3c"/>
+<g class="eyes"><ellipse cx="32" cy="36" rx="2.4" ry="3.2" fill="#222"/><ellipse cx="48" cy="36" rx="2.4" ry="3.2" fill="#222"/></g>
+<circle cx="27" cy="42" r="3" fill="#ff9aa8" opacity=".7"/><circle cx="53" cy="42" r="3" fill="#ff9aa8" opacity=".7"/>
+<path d="M36 44Q40 48 44 44" stroke="#c0594a" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+</svg></div></div>
+
+<nav id="nav">
+<button data-go="brief"><span>📝</span>Brief</button><button data-go="fill"><span>✏️</span>กรอก</button><button data-go="img"><span>🖼️</span>รูป</button><button data-go="cap"><span>💬</span>แคปชั่น</button><button data-go="res"><span>🔍</span>ผลตรวจ</button>
+</nav>
 
 <script>
 (function(){
-var $=function(id){return document.getElementById(id)};
-var TYPES=["Head LINE","รายละเอียด/ราคา","ชื่อสินค้า","รูปสินค้า","วัน-เวลา","ข้อความที่ต้องมี"];
-var checked={},lastErrors=null,lastName="",lastText="";
-
-function norm(s){return (s||"").toLowerCase().replace(/\s+/g,"")}
-function nums(s){return (s||"").match(/\d+/g)||[]}
+var $=function(i){return document.getElementById(i)};
+var T=["Head LINE","รายละเอียด","ชื่อสินค้า","รูปสินค้า/สื่อ","วัน-เวลา"];
+var AK=["Head LINE ในรูปตรง","ราคา/เงื่อนไขในรูปตรง","ชื่อสินค้าในรูปตรง","รูปสินค้าในรูปตรง","วัน-เวลาในรูปตรง"];
+var ICON={ok:"✅",bad:"❌",skip:"⏳"},TAG={ok:"ผ่าน",bad:"ต้องแก้",skip:"ยังไม่ครบ"};
+var TIPS={brief:"พี่เลี้ยงใส่คำตอบที่ถูกต้องนะ 📝",fill:"พิมพ์ให้เหมือนโพสต์จริงนะ ✏️",img:"แนบรูปได้ไม่จำกัดเลย 🖼️",cap:"เขียนอิสระได้ พี่จะอ่านให้ 💬",res:"กดตรวจเลย ไม่ต้องกลัวนะ 🔍"};
+var CHEER=["สู้ๆ นะ 💪","ค่อยๆ ทำก็ได้ 🌱","เก่งมากเลย 🎉","น้องวีเช็คอยู่ข้างๆ นะ 🐣"];
+var S={id:rid(),p:"",M:[],cur:0},locked=false,entries=[],view="brief";
+function rid(){return Math.random().toString(36).slice(2,8)}
+function nm(){return {id:rid(),n:"",h:"",d:"",r:"",t:"",j:{h:"",d:"",r:"",t:"",c:"",pi:{},ai:[],ck:{}}}}
+function clean(s){return (s||"").replace(/\s+/g," ").trim()}
+function lines(s){return (s||"").split(/\n/).map(clean).filter(Boolean)}
 function toks(s){return (s||"").toLowerCase().match(/[a-z]+|\d+|[ก-๙]+/g)||[]}
 function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i})}
-function lines(s){return (s||"").split(/\n/).map(function(x){return x.trim()}).filter(Boolean)}
+function teq(a,b){var A=uniq(toks(a)),B=uniq(toks(b));return A.every(function(x){return B.indexOf(x)>-1})&&B.every(function(x){return A.indexOf(x)>-1})}
 function enc(o){try{return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}catch(e){return ""}}
 function dec(s){try{s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))))}catch(e){return null}}
+function cur(){return S.M[S.cur]}
+function save(){try{localStorage.setItem("vc_proj",JSON.stringify(S,function(k,v){return(k==="pi"||k==="ai")?undefined:v}))}catch(e){}}
+function restore(){try{var c=JSON.parse(localStorage.getItem("vc_proj")||"null");if(c&&c.M&&c.M.length){c.M.forEach(function(m){m.j=m.j||{h:"",d:"",r:"",t:"",c:"",ck:{}};m.j.pi={};m.j.ai=[];m.j.ck=m.j.ck||{}});S=c;return true}}catch(e){}return false}
+function copy(text,btn){var o=btn.textContent;
+  function done(){btn.textContent="คัดลอกแล้ว 🎉";setTimeout(function(){btn.textContent=o},1600)}
+  function fb(){var t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();try{document.execCommand("copy");done()}catch(e){btn.textContent="คัดลอกไม่ได้"}document.body.removeChild(t)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fb)}else fb()}
+function say(t){var b=$("bub");b.textContent=t;b.style.display="block";clearTimeout(say.k);say.k=setTimeout(function(){b.style.display="none"},3000)}
 
-function copy(text,btn,label){
-  function done(){var o=label||btn.textContent;btn.textContent="คัดลอกแล้ว 🎉";setTimeout(function(){btn.textContent=o},1600)}
-  function fb(){var t=document.createElement("textarea");t.value=text;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();
-    try{document.execCommand("copy");done()}catch(e){btn.textContent="คัดลอกไม่ได้ ลองกดค้างที่ข้อความ"}document.body.removeChild(t)}
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fb)}else{fb()}
-}
+/* diff */
+function lcs(a,b){var A=Array.from(a),B=Array.from(b),n=A.length,m=B.length,w=m+1,i,j;
+  if(n*m>250000)return{len:0,A:A,B:B,fa:null,fb:null};
+  var dp=new Uint16Array((n+1)*w);
+  for(i=1;i<=n;i++)for(j=1;j<=m;j++)dp[i*w+j]=A[i-1]===B[j-1]?dp[(i-1)*w+j-1]+1:Math.max(dp[(i-1)*w+j],dp[i*w+j-1]);
+  var fa=new Array(n).fill(false),fb=new Array(m).fill(false);i=n;j=m;
+  while(i>0&&j>0){if(A[i-1]===B[j-1]){fa[i-1]=true;fb[j-1]=true;i--;j--}else if(dp[(i-1)*w+j]>=dp[i*w+j-1])i--;else j--}
+  return{len:dp[n*w+m],A:A,B:B,fa:fa,fb:fb}}
+function paint(el,ch,fl){if(!fl){el.textContent=ch.join("");return}
+  var s="",f=null;function flush(){if(!s)return;if(f){var k=document.createElement("mark");k.textContent=s;el.appendChild(k)}else el.appendChild(document.createTextNode(s));s=""}
+  ch.forEach(function(c,i){var x=!fl[i];if(x!==f){flush();f=x}s+=c});flush()}
+function line(lb,txt,ch,fl){var d=document.createElement("div"),l=document.createElement("span"),v=document.createElement("span");l.className="lb";l.textContent=lb;
+  if(ch)paint(v,ch,fl);else v.textContent=txt;d.appendChild(l);d.appendChild(v);return d}
+function detNode(d){var w=document.createElement("div");w.className="det";
+  if(d.note){w.textContent="• "+d.note+(d.a?": "+d.a:d.b?": "+d.b:"");return w}
+  var r=lcs(d.a,d.b);w.appendChild(line("พี่: ",d.a,r.A,r.fa));w.appendChild(line("น้อง: ",d.b,r.B,r.fb));return w}
 
-function brief(){return {n:$("bName").value,d:$("bDate").value,p:$("bPromo").value,o:$("bNormal").value,c:$("bCond").value,r:$("bProd").value,m:$("bMust").value}}
-function fillBrief(o){$("bName").value=o.n||"";$("bDate").value=o.d||"";$("bPromo").value=o.p||"";$("bNormal").value=o.o||"";$("bCond").value=o.c||"";$("bProd").value=o.r||"";$("bMust").value=o.m||""}
+/* compare */
+function cmpT(t,label,ex,got,loose){ex=clean(ex);got=clean(got);if(!ex)return null;
+  if(!got)return{t:t,s:"skip",m:"น้องยังไม่ได้กรอก"+label};
+  if(loose?loose(ex,got):ex===got)return{t:t,s:"ok",m:label+"ตรงกับ Brief"};
+  return{t:t,s:"bad",m:label+"ไม่ตรงกับ Brief",det:[{a:ex,b:got}]}}
+function cmpP(m){var E=lines(m.r),G=lines(m.j.r);if(!E.length)return null;
+  if(!G.length)return{t:2,s:"skip",m:"น้องยังไม่ได้กรอกชื่อสินค้า"};
+  var used=[],det=[];
+  E.forEach(function(e){var k=G.findIndex(function(g,i){return used.indexOf(i)<0&&g===e});if(k>-1){used.push(k);return}
+    var best=-1,bl=-1;G.forEach(function(g,i){if(used.indexOf(i)<0){var l=lcs(e,g).len;if(l>bl){bl=l;best=i}}});
+    if(best>-1&&bl>=Math.ceil(Array.from(e).length/2)){used.push(best);det.push({a:e,b:G[best]})}else det.push({a:e,note:"ไม่พบสินค้านี้ในที่น้องกรอก"})});
+  G.forEach(function(g,i){if(used.indexOf(i)<0)det.push({b:g,note:"สินค้านี้ไม่อยู่ใน Brief"})});
+  return det.length?{t:2,s:"bad",m:"ชื่อสินค้าไม่ตรงกับ Brief "+det.length+" รายการ",det:det}:{t:2,s:"ok",m:"ชื่อสินค้าครบทั้ง "+E.length+" รายการ"}}
+function cmpI(m){var E=lines(m.r),j=m.j;
+  var any=E.some(function(e){return(j.pi[e]||[]).length})||j.ai.length;if(!E.length&&!j.ai.length)return null;
+  if(!any)return{t:3,s:"skip",m:"ยังไม่ได้แนบรูป"};
+  var miss=[];E.forEach(function(e){if(!(j.pi[e]||[]).length)miss.push("ยังไม่มีรูปสินค้า "+e);else if(!j.ck["p:"+e])miss.push("ยังไม่ได้ติ๊กยืนยันรูป "+e)});
+  if(!j.ai.length)miss.push("ยังไม่ได้แนบรูปสื่อจริง");else AK.forEach(function(a,k){if(!j.ck["a:"+k])miss.push("ยังไม่ได้ติ๊ก: "+a)});
+  return miss.length?{t:3,s:"bad",m:"รูปยังไม่ครบ",det:miss.map(function(x){return{note:x}})}:{t:3,s:"ok",m:"ตรวจรูปสินค้าและรูปสื่อครบแล้ว"}}
+function runM(m){var j=m.j,it=[cmpT(0,"Head LINE",m.h,j.h),cmpT(1,"รายละเอียด",m.d,j.d),cmpP(m),cmpI(m),cmpT(4,"วัน-เวลา",m.t,j.t,teq)].filter(Boolean);
+  return it.length?it:[{t:0,s:"skip",m:"พี่เลี้ยงยังไม่ได้ใส่ Brief ของสื่อนี้"}]}
 
-function progress(){
-  var ids=["bName","bDate","bPromo","bProd","pHead","pCap","pDate"];
-  var n=ids.filter(function(i){return $(i).value.trim()}).length;
-  $("barFill").style.width=Math.round(n*100/ids.length)+"%";
-  $("barTxt").textContent=n===ids.length?"กรอกครบแล้ว พร้อมตรวจเลย 🌟":"กรอกแล้ว "+n+" จาก "+ids.length+" ช่องสำคัญ 🌱";
-}
+function show(){var out=$("out");out.textContent="";entries=[];var bad=0,skip=0;
+  S.M.forEach(function(m,i){var items=runM(m),h=document.createElement("h2");h.textContent="📍 "+(m.n||"สื่อ "+(i+1));h.style.marginTop="14px";out.appendChild(h);
+    var errs=[];items.forEach(function(x){if(x.s==="bad"){bad++;errs.push(x.t)}if(x.s==="skip")skip++;
+      var d=document.createElement("div");d.className="item "+x.s;var b=document.createElement("b"),p=document.createElement("p");
+      b.textContent=ICON[x.s]+" "+T[x.t]+" · "+TAG[x.s];p.textContent=x.m;d.appendChild(b);d.appendChild(p);(x.det||[]).forEach(function(z){d.appendChild(detNode(z))});out.appendChild(d)});
+    entries.push({n:(S.p||"-")+" / "+(m.n||"สื่อ "+(i+1)),e:errs})});
+  var v=document.createElement("div");
+  if(bad){v.className="verdict bad";v.textContent="เกือบแล้ว! แก้อีก "+bad+" จุดนะ 💪"}else if(skip){v.className="verdict skip";v.textContent="ยังกรอกไม่ครบ "+skip+" ข้อ ค่อยๆ ไปต่อนะ 🌱"}else{v.className="verdict ok";v.textContent="เก่งมาก! ผ่านทุกข้อ ส่งให้พี่ตรวจได้เลย 🎉"}
+  out.insertBefore(v,out.firstChild);say(bad?"แก้อีกนิดเดียวนะ 💪":skip?"กรอกต่ออีกหน่อยนะ 🌱":"ผ่านหมดเลย! 🎉")}
+function report(){var t="🐣 รายงานโพสต์: "+(S.p||"-")+"\n";
+  S.M.forEach(function(m,i){t+="\n— "+(m.n||"สื่อ "+(i+1))+" —\n";
+    runM(m).forEach(function(x){t+=ICON[x.s]+" "+T[x.t]+": "+x.m+"\n";(x.det||[]).forEach(function(d){t+="   "+(d.note?d.note+(d.a?": "+d.a:d.b?": "+d.b:""):"พี่: "+d.a+" | น้อง: "+d.b)+"\n"})});
+    t+="📝 แคปชั่น:\n"+(m.j.c.trim()||"(ยังไม่ได้เขียน)")+"\n"});return t}
 
-function renderImgChecks(){
-  var box=$("imgChecks");box.textContent="";
-  var ps=lines($("bProd").value);if(!ps.length)return;
-  var t=document.createElement("label");t.textContent="รูปตรงกับสินค้าใน Brief ไหม (ติ๊กเมื่อดูแล้ว)";box.appendChild(t);
-  ps.forEach(function(p){
-    var l=document.createElement("label");l.className="chk";
-    var c=document.createElement("input");c.type="checkbox";c.checked=!!checked[p];
-    c.addEventListener("change",function(){checked[p]=c.checked});
-    var s=document.createElement("span");s.textContent="รูปสินค้า: "+p;
-    l.appendChild(c);l.appendChild(s);box.appendChild(l);
-  });
-}
+/* stats */
+function getLog(){try{return JSON.parse(localStorage.getItem("vc_log")||"[]")}catch(e){return[]}}
+function setLog(a){try{localStorage.setItem("vc_log",JSON.stringify(a))}catch(e){}}
+function stats(){var l=getLog(),b=$("stats");b.textContent="";
+  if(!l.length){b.innerHTML='<p class="note">ยังไม่มีสถิติ กดตรวจแล้วบันทึกลงสถิติ</p>';return}
+  var ok=l.filter(function(x){return!x.e.length}).length,p=document.createElement("p");p.textContent="ตรวจแล้ว "+l.length+" สื่อ ผ่านครั้งแรก "+ok+" ("+Math.round(ok*100/l.length)+"%)";b.appendChild(p);
+  var tb=document.createElement("table");tb.innerHTML="<tr><th>ประเภท</th><th>ครั้ง</th></tr>";
+  T.forEach(function(t,i){var tr=document.createElement("tr"),a=document.createElement("td"),c=document.createElement("td");a.textContent=t;c.textContent=l.filter(function(x){return x.e.indexOf(i)>-1}).length;tr.appendChild(a);tr.appendChild(c);tb.appendChild(tr)});b.appendChild(tb)}
 
-function check(){
-  var b={name:$("bName").value,date:$("bDate").value,promo:$("bPromo").value,normal:$("bNormal").value,cond:$("bCond").value,prods:lines($("bProd").value),must:lines($("bMust").value)};
-  var p={head:$("pHead").value,cap:$("pCap").value,date:$("pDate").value};
-  var all=p.head+" "+p.cap,res=[];
-  if(!b.name.trim()||!p.head.trim()){res.push({t:0,s:"skip",m:"ยังไม่ได้กรอกชื่อโปรใน Brief หรือ Head LINE"})}
-  else if(norm(p.head).indexOf(norm(b.name))>-1){res.push({t:0,s:"ok",m:"Head LINE มีชื่อโปรตรงกับ Brief"})}
-  else{res.push({t:0,s:"bad",m:"Head LINE ไม่ตรงกับ Brief ควรมี: "+b.name})}
-  var need=uniq(nums(b.promo).concat(nums(b.normal),nums(b.cond)));
-  if(!need.length||!p.cap.trim()){res.push({t:1,s:"skip",m:"ยังไม่ได้กรอกราคา/เงื่อนไข หรือแคปชั่น"})}
-  else{
-    var have=nums(all),miss=need.filter(function(n){return have.indexOf(n)<0});
-    var allowed=need.concat(nums(b.date),nums(p.date),nums(b.prods.join(" ")));
-    var extra=uniq(have).filter(function(n){return allowed.indexOf(n)<0});
-    if(miss.length){res.push({t:1,s:"bad",m:"ไม่พบตัวเลขจาก Brief ในโพสต์: "+miss.join(", ")})}
-    else if(extra.length){res.push({t:1,s:"warn",m:"ราคาครบ แต่มีตัวเลขที่ไม่อยู่ใน Brief: "+extra.join(", ")+" ลองดูอีกนิดนะ"})}
-    else{res.push({t:1,s:"ok",m:"ราคาและเงื่อนไขครบตาม Brief ("+need.join(", ")+")"})}
-  }
-  if(!b.prods.length||!all.trim()){res.push({t:2,s:"skip",m:"ยังไม่ได้กรอกชื่อสินค้าใน Brief หรือเนื้อหาโพสต์"})}
-  else{
-    var nm=b.prods.filter(function(x){return norm(all).indexOf(norm(x))<0});
-    if(nm.length){res.push({t:2,s:"bad",m:"ไม่พบชื่อสินค้าในโพสต์: "+nm.join(", ")})}
-    else{res.push({t:2,s:"ok",m:"ชื่อสินค้าครบทั้ง "+b.prods.length+" รายการ"})}
-  }
-  if(!b.prods.length){res.push({t:3,s:"skip",m:"ยังไม่มีรายการสินค้าให้ตรวจรูป"})}
-  else{
-    var hasImg=!!$("imgBox").querySelector("img"),un=b.prods.filter(function(x){return !checked[x]});
-    if(!hasImg){res.push({t:3,s:"skip",m:"ยังไม่ได้แนบรูปชิ้นงาน"})}
-    else if(un.length){res.push({t:3,s:"bad",m:"ยังไม่ได้ยืนยันรูปสินค้า: "+un.join(", ")})}
-    else{res.push({t:3,s:"ok",m:"ยืนยันรูปสินค้าตรงกับ Brief ครบแล้ว"})}
-  }
-  if(!b.date.trim()||!p.date.trim()){res.push({t:4,s:"skip",m:"ยังไม่ได้กรอกวัน-เวลาใน Brief หรือในโพสต์"})}
-  else{
-    var A=uniq(toks(b.date)),B=uniq(toks(p.date));
-    var d1=A.filter(function(x){return B.indexOf(x)<0}),d2=B.filter(function(x){return A.indexOf(x)<0});
-    if(d1.length||d2.length){res.push({t:4,s:"bad",m:"วัน-เวลาไม่ตรงกัน Brief: "+b.date+" / โพสต์: "+p.date})}
-    else{res.push({t:4,s:"ok",m:"วัน-เวลาตรงกับ Brief: "+b.date})}
-  }
-  if(b.must.length){
-    var mm=b.must.filter(function(x){return norm(all).indexOf(norm(x))<0});
-    if(mm.length){res.push({t:5,s:"bad",m:"ยังไม่พบข้อความที่ต้องมี: "+mm.join(" | ")})}
-    else{res.push({t:5,s:"ok",m:"มีข้อความที่ต้องมีครบ "+b.must.length+" ข้อ"})}
-  }
-  return {res:res,name:b.name};
-}
+/* images */
+function shrink(f,cb){var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.78))};im.onerror=function(){cb(rd.result)};im.src=rd.result};rd.readAsDataURL(f)}
+function addFiles(files,arr,done){Array.prototype.forEach.call(files,function(f){shrink(f,function(u){arr.push(u);done()})})}
+function thumbs(box,arr,rerender){box.textContent="";arr.forEach(function(u,i){var d=document.createElement("div"),im=document.createElement("img"),x=document.createElement("b");
+  im.src=u;im.alt="รูปที่แนบ";im.onclick=function(){im.classList.toggle("big")};x.textContent="×";x.setAttribute("aria-label","ลบรูป");x.onclick=function(){arr.splice(i,1);rerender()};d.appendChild(im);d.appendChild(x);box.appendChild(d)})}
+function ck(box,key,text){var l=document.createElement("label"),c=document.createElement("input"),s=document.createElement("span");l.className="chk";c.type="checkbox";c.checked=!!cur().j.ck[key];
+  c.onchange=function(){cur().j.ck[key]=c.checked;save()};s.textContent=text;l.appendChild(c);l.appendChild(s);box.appendChild(l)}
+function renderImgs(){var m=cur(),box=$("prodImgs");box.textContent="";var E=lines(m.r);
+  if(!E.length)box.innerHTML='<p class="note">ยังไม่มีชื่อสินค้าใน Brief ให้พี่เลี้ยงใส่ในหน้า Brief ก่อนนะ</p>';
+  E.forEach(function(e){var h=document.createElement("label"),f=document.createElement("input"),t=document.createElement("div");h.textContent="🍞 "+e;f.type="file";f.accept="image/*";f.multiple=true;t.className="th";
+    var arr=m.j.pi[e]=m.j.pi[e]||[];function re(){thumbs(t,arr,re)}f.onchange=function(){addFiles(f.files,arr,re);f.value=""};
+    box.appendChild(h);box.appendChild(f);box.appendChild(t);re();ck(box,"p:"+e,"รูปของ “"+e+"” ตรงกับสินค้าแล้ว")});
+  function ra(){thumbs($("artTh"),m.j.ai,ra)}ra();var c=$("artCk");c.textContent="";
+  var l=document.createElement("label");l.textContent="ตรวจในรูปสื่อจริง (ติ๊กเมื่อดูแล้ว)";c.appendChild(l);AK.forEach(function(a,k){ck(c,"a:"+k,a)})}
 
-var ICON={ok:"✅",bad:"❌",warn:"⚠️",skip:"⏳"},TAG={ok:"ผ่าน",bad:"ต้องแก้",warn:"ลองดูอีกนิด",skip:"ยังไม่ครบ"};
-function show(){
-  var r=check(),box=$("items");box.textContent="";
-  var bad=r.res.filter(function(x){return x.s==="bad"}),skip=r.res.filter(function(x){return x.s==="skip"}),warn=r.res.filter(function(x){return x.s==="warn"});
-  var d=document.createElement("div"),vt;
-  if(bad.length){d.className="verdict bad";vt="เกือบแล้ว! แก้อีก "+bad.length+" จุดนะ 💪"}
-  else if(skip.length){d.className="verdict warn";vt="ยังกรอกไม่ครบ "+skip.length+" ข้อ ค่อยๆ ไปต่อนะ 🌱"}
-  else if(warn.length){d.className="verdict warn";vt="ผ่านแล้ว แต่ลองดูอีก "+warn.length+" จุดนะ 👀"}
-  else{d.className="verdict ok";vt="เก่งมาก! ผ่านทุกข้อ ส่งให้พี่ตรวจได้เลย 🎉"}
-  d.textContent=vt;$("verdict").textContent="";$("verdict").appendChild(d);
-  var txt="🐣 ผลตรวจโพสต์: "+(r.name||"-")+"\n";
-  r.res.forEach(function(x){
-    var it=document.createElement("div");it.className="item "+x.s;
-    var b=document.createElement("b");b.textContent=ICON[x.s]+" "+TYPES[x.t]+" · "+TAG[x.s];
-    var pp=document.createElement("p");pp.textContent=x.m;
-    it.appendChild(b);it.appendChild(pp);box.appendChild(it);
-    txt+=ICON[x.s]+" "+TYPES[x.t]+": "+x.m+"\n";
-  });
-  lastText=txt+"\n"+vt;lastErrors=bad.map(function(x){return x.t});lastName=r.name;
-  $("result").hidden=false;$("result").scrollIntoView({behavior:"smooth",block:"start"});
-}
+/* ui */
+var BMAP={bName:"n",bHead:"h",bDetail:"d",bProd:"r",bDate:"t"},JMAP={jHead:"h",jDetail:"d",jProd:"r",jDate:"t",jCap:"c"};
+function fields(){var m=cur();Object.keys(BMAP).forEach(function(i){$(i).value=m[BMAP[i]]});Object.keys(JMAP).forEach(function(i){$(i).value=m.j[JMAP[i]]});$("pName").value=S.p;capInfo()}
+function capInfo(){var c=cur().j.c;$("capN").textContent=c.length+" ตัวอักษร";var t="รบกวนพี่ช่วยตรวจแคปชั่นใต้โพสต์ให้หน่อยค่ะ 🙏\n["+(cur().n||"สื่อ "+(S.cur+1))+"]\n"+c;$("capLine").href="https://line.me/R/msg/text/?"+encodeURIComponent(t);$("capLine").dataset.t=t}
+function tabs(){var b=$("tabs");b.textContent="";S.M.forEach(function(m,i){var x=document.createElement("button");x.className="chip soft";x.setAttribute("aria-pressed",i===S.cur);x.textContent=(i===S.cur?"📍 ":"")+(m.n||"สื่อ "+(i+1));x.onclick=function(){S.cur=i;all()};b.appendChild(x)})}
+function all(){tabs();fields();renderImgs();save()}
+function go(v){view=v;Array.prototype.forEach.call(document.querySelectorAll(".view"),function(s){s.classList.toggle("on",s.id==="v-"+v)});
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.classList.toggle("on",b.dataset.go===v)});say(TIPS[v]);window.scrollTo(0,0)}
+function lock(on){locked=on;Object.keys(BMAP).concat("pName").forEach(function(i){$(i).readOnly=on});$("mgmt").hidden=on;$("shareBtn").hidden=on;$("demoBtn").hidden=on;$("lockBtn").textContent=on?"🔓 ปลดล็อกเพื่อแก้ Brief":"🔒 ล็อก Brief"}
 
-function getLog(){try{return JSON.parse(localStorage.getItem("ppc_log")||"[]")}catch(e){return []}}
-function setLog(a){try{localStorage.setItem("ppc_log",JSON.stringify(a))}catch(e){}}
-function renderStats(){
-  var log=getLog(),box=$("stats");box.textContent="";
-  if(!log.length){var e=document.createElement("p");e.className="note";e.textContent="ยังไม่มีผลที่บันทึก กดบันทึกลงสถิติหลังตรวจแต่ละโพสต์";box.appendChild(e);return}
-  var passed=log.filter(function(x){return !x.e.length}).length;
-  var s=document.createElement("p");s.textContent="ตรวจแล้ว "+log.length+" โพสต์ ผ่านครั้งแรก "+passed+" โพสต์ ("+Math.round(passed*100/log.length)+"%)";box.appendChild(s);
-  var tb=document.createElement("table"),h=document.createElement("tr");h.innerHTML="<th>ประเภทข้อผิดพลาด</th><th>ครั้ง</th>";tb.appendChild(h);
-  TYPES.forEach(function(t,i){
-    var n=log.filter(function(x){return x.e.indexOf(i)>-1}).length;
-    var tr=document.createElement("tr"),a=document.createElement("td"),c=document.createElement("td");
-    a.textContent=t;c.textContent=n;tr.appendChild(a);tr.appendChild(c);tb.appendChild(tr);
-  });
-  box.appendChild(tb);
-}
-
-["bName","bDate","bPromo","bProd","pHead","pCap","pDate"].forEach(function(i){$(i).addEventListener("input",progress)});
-$("bProd").addEventListener("input",renderImgChecks);
-$("pImg").addEventListener("change",function(){
-  var f=this.files&&this.files[0],box=$("imgBox");box.textContent="";if(!f)return;
-  var rd=new FileReader();
-  rd.onload=function(){var im=document.createElement("img");im.alt="รูปชิ้นงานที่จะโพสต์";im.src=rd.result;box.appendChild(im)};
-  rd.readAsDataURL(f);
-});
-$("shareBtn").addEventListener("click",function(){
-  var b=brief();
-  if(!b.n.trim()||!b.r.trim()){$("shareMsg").textContent="ใส่ชื่อโปรและชื่อสินค้าก่อนนะ แล้วค่อยสร้างลิงก์";return}
-  var url=location.href.split("#")[0]+"#b="+enc(b);
-  $("shareUrl").value=url;$("shareBox").hidden=false;$("shareMsg").textContent="ส่งลิงก์นี้ให้น้องทาง LINE ได้เลย ข้อมูลอยู่ในลิงก์ ไม่ถูกเก็บที่ไหน";
-  $("lineLink").href="https://line.me/R/msg/text/?"+encodeURIComponent("📋 Brief โปร "+b.n+"\nกดเปิดแล้วกรอกโพสต์ได้เลย 👉 "+url);
-});
-$("copyLink").addEventListener("click",function(){copy($("shareUrl").value,this,"คัดลอกลิงก์")});
-$("copyRes").addEventListener("click",function(){copy(lastText,this,"คัดลอกผลส่ง LINE")});
-$("runBtn").addEventListener("click",show);
-$("saveBtn").addEventListener("click",function(){
-  if(!lastErrors)return;
-  var log=getLog();log.push({n:lastName,e:lastErrors,t:Date.now()});setLog(log);renderStats();
-  var b=this;b.textContent="บันทึกแล้ว 🎉";setTimeout(function(){b.textContent="บันทึกลงสถิติ"},1600);
-});
-$("resetLog").addEventListener("click",function(){setLog([]);renderStats()});
-$("clearBtn").addEventListener("click",function(){
-  ["bName","bDate","bPromo","bNormal","bCond","bProd","bMust","pHead","pCap","pDate"].forEach(function(i){$(i).value=""});
-  checked={};$("imgBox").textContent="";$("pImg").value="";$("result").hidden=true;$("shareBox").hidden=true;$("banner").hidden=true;
-  try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}
-  renderImgChecks();progress();
-});
-$("demoBtn").addEventListener("click",function(){
-  fillBrief({n:"Jingle Bell Deal",d:"24 Dec 26 - 3 Jan 27",p:"99",o:"110, 120, 130",c:"2 ชิ้น 99",r:"เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง",m:"สินค้าเพื่อการโฆษณา เฉพาะสินค้าและสาขาที่ร่วมรายการ"});
-  $("pHead").value="Jingle Bell Deal";
-  $("pCap").value="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.- เมลอนชิโอะปัง และเรดเวลเวทครีมชีสชิ้นโอะปัง";
-  $("pDate").value="24 Dec 26 - 4 Jan 27";
-  checked={};renderImgChecks();progress();
-});
+Object.keys(BMAP).forEach(function(i){$(i).addEventListener("input",function(){cur()[BMAP[i]]=this.value;if(i==="bName")tabs();if(i==="bProd")renderImgs();save()})});
+Object.keys(JMAP).forEach(function(i){$(i).addEventListener("input",function(){cur().j[JMAP[i]]=this.value;if(i==="jCap")capInfo();save()})});
+$("pName").addEventListener("input",function(){S.p=this.value;save()});
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
+$("artIn").onchange=function(){addFiles(this.files,cur().j.ai,function(){renderImgs()});this.value=""};
+$("addBtn").onclick=function(){S.M.push(nm());S.cur=S.M.length-1;all()};
+$("dupBtn").onclick=function(){var m=nm(),c=cur();["n","h","d","r","t"].forEach(function(k){m[k]=c[k]});m.n=(c.n||"สื่อ")+" (สำเนา)";S.M.push(m);S.cur=S.M.length-1;all()};
+$("delBtn").onclick=function(){if(S.M.length<2)return;S.M.splice(S.cur,1);S.cur=Math.max(0,S.cur-1);all()};
+$("lockBtn").onclick=function(){lock(!locked)};
+$("shareBtn").onclick=function(){
+  if(!S.M.some(function(m){return m.h||m.d||m.r})){$("shareMsg").textContent="ใส่ Brief อย่างน้อย 1 สื่อก่อนนะ";return}
+  var u=location.href.split("#")[0]+"#b="+enc({i:S.id,p:S.p,m:S.M.map(function(m){return{i:m.id,n:m.n,h:m.h,d:m.d,r:m.r,t:m.t}})});
+  $("shareUrl").value=u;$("shareBox").hidden=false;
+  $("shareMsg").textContent="ส่งลิงก์นี้ให้น้อง เพิ่มสื่อใหม่เมื่อไหร่ กดสร้างลิงก์ใหม่ส่งอีกครั้ง น้องเปิดแล้วระบบรวมเข้ากับโปรเดิมให้"+(u.length>3500?" (ลิงก์ค่อนข้างยาว ถ้าส่ง LINE ไม่ได้ ให้คัดลอกลิงก์ไปวางเอง)":"");
+  $("lineLink").href="https://line.me/R/msg/text/?"+encodeURIComponent("📋 Brief โปร "+S.p+" ("+S.M.length+" สื่อ)\nกดเปิดแล้วกรอกตาม Brief ได้เลย 👉 "+u)};
+$("copyLink").onclick=function(){copy($("shareUrl").value,this)};
+$("capCopy").onclick=function(){copy($("capLine").dataset.t||"",this)};
+$("runBtn").onclick=show;
+$("repBtn").onclick=function(){copy(report(),this)};
+$("saveBtn").onclick=function(){if(!entries.length)return;var l=getLog();entries.forEach(function(e){l.push(e)});setLog(l);stats();var b=this;b.textContent="บันทึกแล้ว 🎉";setTimeout(function(){b.textContent="บันทึกลงสถิติ"},1600)};
+$("resetLog").onclick=function(){setLog([]);stats()};
+$("clearBtn").onclick=function(){S={id:rid(),p:"",M:[nm()],cur:0};lock(false);$("banner").hidden=true;$("shareBox").hidden=true;$("out").textContent="";try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}all()};
+$("demoBtn").onclick=function(){
+  var a=nm(),b=nm();a.n="LINE OA";a.h="Jingle Bell Deal";a.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.-";a.r="เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง";a.t="24 Dec 26 - 3 Jan 27";
+  b.n="จอ LED";b.h="Jingle Bell Deal";b.d="2 ชิ้น 99.-";b.r=a.r;b.t=a.t;
+  a.j.h="Jingle Bell Deal";a.j.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 140.-";a.j.r="เรดเวลเวทครีมชีสชิ้นโอะปัง\nเมลอนชิโอะปัง";a.j.t="24 Dec 26 - 4 Jan 27";
+  a.j.c="🎄🔔 ดีลสุดคุ้มต้อนรับคริสต์มาส!\nซื้อ 2 ชิ้น เพียง 99.- 💥\n📅 24 ธ.ค. - 3 ม.ค.\n#JingleBellDeal";
+  b.j.h="Jingle Bell";b.j.d="2 ชิ้น 99.-";b.j.r=a.r;b.j.t=a.t;S.p="Jingle Bell Deal";S.M=[a,b];S.cur=0;all()};
 
 var h=location.hash;
-if(h.indexOf("#b=")===0){
-  var o=dec(h.slice(3));
-  if(o){fillBrief(o);$("banner").hidden=false;$("bSec").removeAttribute("open")}
-}
-renderImgChecks();progress();renderStats();
+if(h.indexOf("#b=")===0){var o=dec(h.slice(3));
+  if(o&&o.m&&o.m.length){restore();var mine=S.id===o.i,old={};S.M.forEach(function(m){old[m.id]=m});
+    S.M=o.m.map(function(x){var m=(mine&&old[x.i])||nm();m.id=x.i;m.n=x.n||"";m.h=x.h||"";m.d=x.d||"";m.r=x.r||"";m.t=x.t||"";return m});
+    S.id=o.i;S.p=o.p||"";S.cur=0;$("banner").hidden=false;lock(true);view="fill"}}
+else if(!restore()){S.M=[nm()]}
+if(!locked)lock(false);
+all();stats();go(view);
+$("mas").onclick=function(){var e=$("mas");e.classList.remove("jump");void e.offsetWidth;e.classList.add("jump");say(CHEER[Math.floor(Math.random()*CHEER.length)])};
 })();
 </script>
 </body>
 </html>
-
-  
