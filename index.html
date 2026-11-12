@@ -345,3 +345,189 @@ function cmpT(t,label,ex,got,loose){ex=clean(ex);got=clean(got);if(!ex)return nu
   if(!got)return{t:t,s:"skip",m:"น้องยังไม่ได้กรอก "+label};
   if(loose?loose(ex,got):ex===got)return{t:t,s:"ok",m:label+" ตรงกับ Brief"};
   return{t:t,s:"bad",m:label+" ไม่ตรงกับ Brief",det:[{a:ex,b:got}]}}
+function cmpP(m){var E=lines(m.r),G=lines(m.j.r);if(!E.length)return null;
+  if(!G.length)return{t:2,s:"skip",m:"น้องยังไม่ได้กรอกชื่อสินค้า"};
+  var used=[],det=[];
+  E.forEach(function(e){var k=G.findIndex(function(g,i){return used.indexOf(i)<0&&g===e});if(k>-1){used.push(k);return}
+    var best=-1,bl=-1;G.forEach(function(g,i){if(used.indexOf(i)<0){var l=lcs(e,g).len;if(l>bl){bl=l;best=i}}});
+    if(best>-1&&bl>=Math.ceil(Array.from(e).length/2)){used.push(best);det.push({a:e,b:G[best]})}else det.push({a:e,note:"ไม่พบสินค้านี้ในที่น้องกรอก"})});
+  G.forEach(function(g,i){if(used.indexOf(i)<0)det.push({b:g,note:"สินค้านี้ไม่อยู่ใน Brief"})});
+  return det.length?{t:2,s:"bad",m:"ชื่อสินค้าไม่ตรงกับ Brief "+det.length+" รายการ",det:det}:{t:2,s:"ok",m:"ชื่อสินค้าครบทั้ง "+E.length+" รายการ"}}
+function cmpI(m){var E=lines(m.r),j=m.j;
+  var any=E.some(function(e){return(j.pi[e]||[]).length})||j.ai.length;if(!E.length&&!j.ai.length)return null;
+  if(!any)return{t:3,s:"skip",m:"ยังไม่ได้แนบรูป"};
+  var miss=[];E.forEach(function(e){if(!(j.pi[e]||[]).length)miss.push("ยังไม่มีรูปสินค้า "+e);else if(!j.ck["p:"+e])miss.push("ยังไม่ได้ติ๊กยืนยันรูป "+e)});
+  if(!j.ai.length)miss.push("ยังไม่ได้แนบรูปสื่อจริง");else AK.forEach(function(a,k){if(!j.ck["a:"+k])miss.push("ยังไม่ได้ติ๊ก: "+a)});
+  return miss.length?{t:3,s:"bad",m:"รูปยังไม่ครบ",det:miss.map(function(x){return{note:x}})}:{t:3,s:"ok",m:"ตรวจรูปสินค้าและรูปสื่อครบแล้ว"}}
+function runM(m){var j=m.j,it=[cmpT(0,"Head LINE",m.h,j.h),cmpT(1,"รายละเอียด",m.d,j.d),cmpP(m),cmpI(m),cmpT(4,"วัน-เวลา",m.t,j.t,teq)].filter(Boolean);
+  return it.length?it:[{t:0,s:"skip",m:"พี่เลี้ยงยังไม่ได้ใส่ Brief ของสื่อนี้"}]}
+function picked(){return S.M.filter(function(m){return sel[m.id]})}
+function mname(m){return m.n||"สื่อ "+(S.M.indexOf(m)+1)}
+function renderSel(){var b=$("selBox");b.textContent="";if(!selT){sel={};sel[cur().id]=true}
+  S.M.forEach(function(m){var l=document.createElement("label"),c=document.createElement("input"),s=document.createElement("span");l.className="chk";c.type="checkbox";c.checked=!!sel[m.id];
+    c.onchange=function(){selT=true;sel[m.id]=c.checked};s.textContent=mname(m);l.appendChild(c);l.appendChild(s);b.appendChild(l)})}
+function show(){var out=$("out");out.textContent="";entries=[];var L=picked();
+  if(!L.length){out.innerHTML='<p class="note">ติ๊กเลือกสื่อที่ต้องการตรวจก่อนนะ</p>';return null}
+  var bad=0,skip=0;
+  L.forEach(function(m){var items=runM(m),h=document.createElement("h2");h.textContent="📍 "+mname(m);h.style.marginTop="14px";out.appendChild(h);
+    var errs=[];items.forEach(function(x){if(x.s==="bad"){bad++;errs.push(x.t)}if(x.s==="skip")skip++;
+      var d=document.createElement("div");d.className="item "+x.s;var b=document.createElement("b"),p=document.createElement("p");
+      b.textContent=ICON[x.s]+" "+T[x.t]+" · "+TAG[x.s];p.textContent=x.m;d.appendChild(b);d.appendChild(p);(x.det||[]).forEach(function(z){d.appendChild(detNode(z))});out.appendChild(d)});
+    entries.push({n:(S.p||"-")+" / "+mname(m),e:errs})});
+  var v=document.createElement("div");
+  if(bad){v.className="verdict bad";v.textContent="เกือบแล้ว! แก้อีก "+bad+" จุดนะ 💪"}else if(skip){v.className="verdict skip";v.textContent="ยังกรอกไม่ครบ "+skip+" ข้อ ค่อยๆ ไปต่อนะ 🌱"}else{v.className="verdict ok";v.textContent="เก่งมาก! ผ่านทุกข้อ ส่งให้พี่ตรวจได้เลย 🎉"}
+  out.insertBefore(v,out.firstChild);say(bad?"แก้อีกนิดเดียวนะ 💪":skip?"กรอกต่ออีกหน่อยนะ 🌱":"ผ่านหมดเลย! 🎉");return{bad:bad,skip:skip}}
+function report(){var L=picked();if(!L.length)L=[cur()];var t="🐣 รายงานโพสต์: "+(S.p||"-")+($("byName").value.trim()?" (โดย "+$("byName").value.trim()+")":"")+"\n";
+  L.forEach(function(m){var it=runM(m),b=it.filter(function(x){return x.s==="bad"}).length;t+="\n— "+mname(m)+" — "+(b?"❌ ต้องแก้ "+b+" จุด":it.some(function(x){return x.s==="skip"})?"⏳ ยังไม่ครบ":"✅ ผ่านทุกข้อ")+"\n";
+    it.forEach(function(x){t+=ICON[x.s]+" "+T[x.t]+": "+x.m+"\n";(x.det||[]).forEach(function(d){t+="   "+(d.note?d.note+(d.a?": "+d.a:d.b?": "+d.b:""):"พี่: "+d.a+" | น้อง: "+d.b)+"\n"})});
+    t+="📝 แคปชั่น:\n"+(m.j.c.trim()||"(ยังไม่ได้เขียน)")+"\n"});return t}
+function msgOf(x){var n=(x.det||[]).filter(function(d){return d.note&&!d.a&&!d.b}).map(function(d){return d.note});return((x.m||"")+(n.length?": "+n.join(", "):"")).slice(0,300)}
+function thumb(u,cb){var im=new Image();im.onload=function(){var k=Math.min(1,420/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.6))};im.onerror=function(){cb("")};im.src=u}
+function collectImgs(m){var list=[];lines(m.r).forEach(function(e){(m.j.pi[e]||[]).forEach(function(u){list.push({k:"p",n:e,u:u})})});(m.j.ai||[]).forEach(function(u){list.push({k:"a",n:"",u:u})});
+  return Promise.all(list.map(function(x){return new Promise(function(res){thumb(x.u,function(t){res({k:x.k,n:x.n.slice(0,100),u:t})})})})).then(function(arr){var out=[],tot=0,drop=0;
+    arr.filter(function(x){return x.u}).forEach(function(x){if(out.length<16&&tot+x.u.length<800000){out.push(x);tot+=x.u.length}else drop++});return{imgs:out,drop:drop}})}
+function submit(){var L=picked(),o=$("subOut");
+  if(!L.length){o.textContent="ติ๊กเลือกสื่อที่จะส่งก่อนนะ";return}
+  if(!db||!S.cloud){o.textContent="ยังเชื่อมต่อโปรนี้ไม่ได้ ส่งทาง LINE แทนได้นะ";return}
+  var r=show(),by=$("byName").value.trim().slice(0,60);try{localStorage.setItem("vc_by",by)}catch(e){}
+  o.textContent="กำลังเตรียมรูปและส่งงาน...";
+  Promise.all(L.map(function(m){var j=m.j;return collectImgs(m).then(function(g){
+    var ck=Object.keys(j.ck||{}).filter(function(k){return j.ck[k]}).slice(0,40);
+    var it=runM(m).slice(0,10),cnt=function(k){return it.filter(function(x){return x.s===k}).length},sid=rid(9),bt=F.writeBatch(db);
+    bt.set(F.doc(db,"subs",sid),{promo:S.id,mid:m.id,mname:mname(m),by:by,at:F.serverTimestamp(),
+      cap:(j.c||"").slice(0,4000),fields:{h:(j.h||"").slice(0,500),d:(j.d||"").slice(0,1500),r:(j.r||"").slice(0,1500),t:(j.t||"").slice(0,300),ck:ck,drop:g.drop},imgs:g.imgs,
+      items:it.map(function(x){return{t:x.t,s:x.s,m:msgOf(x)}})});
+    bt.set(F.doc(db,"subidx",sid),{promo:S.id,mid:m.id,mname:mname(m),by:by,at:F.serverTimestamp(),ok:cnt("ok"),bad:cnt("bad"),skip:cnt("skip")});
+    return bt.commit()})}))
+  .then(function(){o.textContent="ส่งงานแล้ว ✅ พี่เลี้ยงเห็นผล รูป และแคปชั่นแล้ว ("+L.length+" สื่อ) "+(r&&r.bad?"มี "+r.bad+" จุดที่ต้องแก้":r&&r.skip?"ยังกรอกไม่ครบบางข้อ":"ผ่านทุกข้อ 🎉");say("ส่งงานแล้ว เก่งมาก 🎉")})
+  .catch(function(e){o.textContent="ส่งงานไม่สำเร็จ ("+((e&&e.code)||"")+") ลองใหม่หรือส่งทาง LINE แทนนะ"})}
+
+/* mentor: submissions */
+function gallery(arr){var b=document.createElement("div");b.className="th";arr.forEach(function(u){var d=document.createElement("div"),im=document.createElement("img");im.src=u;im.alt="รูปที่น้องแนบ";im.onclick=function(){im.classList.toggle("big")};d.appendChild(im);b.appendChild(d)});return b}
+function subNodes(s){var w=document.createElement("div"),m=S.M.filter(function(x){return x.id===s.mid})[0],j=s.fields||{},imgs=s.imgs||[];
+  function sec(t){var h=document.createElement("div");h.className="subsec";h.textContent=t;w.appendChild(h)}
+  function row(t){var p=document.createElement("div");p.textContent=t;p.style.wordBreak="break-word";w.appendChild(p)}
+  sec("ผลตรวจที่น้องเห็น");(s.items||[]).forEach(function(it){row(ICON[it.s]+" "+T[it.t]+" · "+TAG[it.s]+(it.m&&it.s!=="ok"?" — "+it.m:""))});
+  if(m){var bad=[cmpT(0,"Head LINE",m.h,j.h),cmpT(1,"รายละเอียด",m.d,j.d),cmpP({r:m.r,j:{r:j.r}}),cmpT(4,"วัน-เวลา",m.t,j.t,teq)].filter(function(x){return x&&x.det});
+    if(bad.length){sec("จุดที่ไม่ตรงกับ Brief (เทียบกับ Brief ปัจจุบัน)");bad.forEach(function(x){x.det.forEach(function(z){w.appendChild(detNode(z))})})}}
+  sec("ที่น้องกรอก");row("Head LINE: "+(j.h||"-"));row("รายละเอียด: "+(j.d||"-"));row("ชื่อสินค้า: "+((j.r||"-").replace(/\n/g," / ")));row("วัน-เวลา: "+(j.t||"-"));
+  sec("รูปที่น้องแนบ ("+imgs.length+" รูป)"+(j.drop?" — ไม่ได้ส่งมา "+j.drop+" รูป เพราะไฟล์ใหญ่เกิน":""));
+  var names=uniq(imgs.filter(function(x){return x.k==="p"}).map(function(x){return x.n}));
+  names.forEach(function(n){row("🍞 "+n);w.appendChild(gallery(imgs.filter(function(x){return x.k==="p"&&x.n===n}).map(function(x){return x.u})))});
+  var art=imgs.filter(function(x){return x.k==="a"});if(art.length){row("🎨 รูปสื่อจริงที่ตกแต่งแล้ว");w.appendChild(gallery(art.map(function(x){return x.u})))}
+  if(!imgs.length)row("(ไม่ได้แนบรูป)");
+  var ck=Array.isArray(j.ck)?j.ck:[];sec("ที่น้องติ๊กยืนยัน ("+ck.length+" ข้อ)");
+  ck.forEach(function(k){row("✔ "+(k.indexOf("p:")===0?"รูปของ “"+k.slice(2)+"” ตรงกับสินค้า":(AK[+k.slice(2)]||k)))});if(!ck.length)row("(ยังไม่ได้ติ๊ก)");
+  sec("แคปชั่น");var c=document.createElement("pre");c.className="cap";c.textContent=s.cap||"(ไม่ได้เขียน)";w.appendChild(c);return w}
+function renderSubs(){var b=$("subList");b.textContent="";
+  subs.forEach(function(s,i){var d=document.createElement("details"),sm=document.createElement("summary"),it=s.items||[],c=function(k){return it.filter(function(x){return x.s===k}).length};
+    d.className="sub";d.dataset.id=s.id||"";d.open=focusSub?s.id===focusSub:i===0;sm.textContent=(s.mname||"สื่อ")+" · "+(s.by||"ไม่ระบุชื่อ")+" · "+tstr(s.at)+" · ✅"+c("ok")+" ❌"+c("bad")+" ⏳"+c("skip");
+    d.appendChild(sm);d.appendChild(subNodes(s));b.appendChild(d)});
+  if(focusSub){var f=b.querySelector("details[open]");if(f)f.scrollIntoView({block:"start"});focusSub=""}}
+function loadSubs(){if(!db||!S.cloud)return;$("subMsg").textContent="กำลังโหลด...";
+  F.getDocs(F.query(F.collection(db,"subs"),F.where("promo","==",S.id))).then(function(q){subs=[];q.forEach(function(d){var v=d.data();v.id=d.id;subs.push(v)});
+    subs.sort(function(a,b){return tms(b.at)-tms(a.at)});try{localStorage.setItem("vc_seen_"+S.id,Math.max(seenOf(S.id),subs.length?tms(subs[0].at):0))}catch(e){}$("subMsg").textContent=subs.length?"มี "+subs.length+" รายการ กดเพื่อดูรายละเอียด":"ยังไม่มีงานที่น้องส่ง";renderSubs()})
+  .catch(function(e){$("subMsg").textContent="โหลดไม่ได้ ("+((e&&e.code)||"")+")"})}
+
+/* stats */
+function getLog(){try{return JSON.parse(localStorage.getItem("vc_log")||"[]")}catch(e){return[]}}
+function setLog(a){try{localStorage.setItem("vc_log",JSON.stringify(a))}catch(e){}}
+function stats(){var l=getLog(),b=$("stats");b.textContent="";
+  if(!l.length){b.innerHTML='<p class="note">ยังไม่มีสถิติ กดตรวจแล้วบันทึกลงสถิติ</p>';return}
+  var ok=l.filter(function(x){return!x.e.length}).length,p=document.createElement("p");p.textContent="ตรวจแล้ว "+l.length+" สื่อ ผ่านครั้งแรก "+ok+" ("+Math.round(ok*100/l.length)+"%)";b.appendChild(p);
+  var tb=document.createElement("table");tb.innerHTML="<tr><th>ประเภท</th><th>ครั้ง</th></tr>";
+  T.forEach(function(t,i){var tr=document.createElement("tr"),a=document.createElement("td"),c=document.createElement("td");a.textContent=t;c.textContent=l.filter(function(x){return x.e.indexOf(i)>-1}).length;tr.appendChild(a);tr.appendChild(c);tb.appendChild(tr)});b.appendChild(tb)}
+
+/* images */
+function shrink(f,cb){var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.78))};im.onerror=function(){cb(rd.result)};im.src=rd.result};rd.readAsDataURL(f)}
+function addFiles(files,arr,done){Array.prototype.forEach.call(files,function(f){shrink(f,function(u){arr.push(u);done()})})}
+function thumbs(box,arr,rerender){box.textContent="";arr.forEach(function(u,i){var d=document.createElement("div"),im=document.createElement("img"),x=document.createElement("b");
+  im.src=u;im.alt="รูปที่แนบ";im.onclick=function(){im.classList.toggle("big")};x.textContent="×";x.setAttribute("aria-label","ลบรูป");x.onclick=function(){arr.splice(i,1);rerender()};d.appendChild(im);d.appendChild(x);box.appendChild(d)})}
+function ck(box,key,text){var l=document.createElement("label"),c=document.createElement("input"),s=document.createElement("span");l.className="chk";c.type="checkbox";c.checked=!!cur().j.ck[key];
+  c.onchange=function(){cur().j.ck[key]=c.checked;save()};s.textContent=text;l.appendChild(c);l.appendChild(s);box.appendChild(l)}
+function renderImgs(){var m=cur(),box=$("prodImgs");box.textContent="";var E=lines(m.r);
+  if(!E.length)box.innerHTML='<p class="note">ยังไม่มีชื่อสินค้าใน Brief ให้พี่เลี้ยงใส่ในหน้า Brief ก่อนนะ</p>';
+  E.forEach(function(e){var h=document.createElement("label"),f=document.createElement("input"),t=document.createElement("div");h.textContent="🍞 "+e;f.type="file";f.accept="image/*";f.multiple=true;t.className="th";
+    var arr=m.j.pi[e]=m.j.pi[e]||[];function re(){thumbs(t,arr,re)}f.onchange=function(){addFiles(f.files,arr,re);f.value=""};
+    box.appendChild(h);box.appendChild(f);box.appendChild(t);re();ck(box,"p:"+e,"รูปของ “"+e+"” ตรงกับสินค้าแล้ว")});
+  function ra(){thumbs($("artTh"),m.j.ai,ra)}ra();var c=$("artCk");c.textContent="";
+  var l=document.createElement("label");l.textContent="ตรวจในรูปสื่อจริง (ติ๊กเมื่อดูแล้ว)";c.appendChild(l);AK.forEach(function(a,k){ck(c,"a:"+k,a)})}
+
+/* ui */
+var BMAP={bName:"n",bHead:"h",bDetail:"d",bProd:"r",bDate:"t"},JMAP={jHead:"h",jDetail:"d",jProd:"r",jDate:"t",jCap:"c"};
+function dirty(){$("shareMsg").textContent="✏️ มีการแก้ไขที่ยังไม่ได้บันทึกขึ้นคลัง"}
+function fields(){var m=cur();Object.keys(BMAP).forEach(function(i){$(i).value=m[BMAP[i]]});Object.keys(JMAP).forEach(function(i){$(i).value=m.j[JMAP[i]]});$("pName").value=S.p;capInfo()}
+function capInfo(){var c=cur().j.c;$("capN").textContent=c.length+" ตัวอักษร";var t="รบกวนพี่ช่วยตรวจแคปชั่นใต้โพสต์ให้หน่อยค่ะ 🙏\n["+mname(cur())+"]\n"+c;$("capLine").href="https://line.me/R/msg/text/?"+encodeURIComponent(t);$("capLine").dataset.t=t}
+function tabs(){var b=$("tabs");b.textContent="";S.M.forEach(function(m,i){var x=document.createElement("button");x.className="chip soft";x.setAttribute("aria-pressed",i===S.cur);x.textContent=(i===S.cur?"📍 ":"")+mname(m);x.onclick=function(){S.cur=i;all()};b.appendChild(x)})}
+function chrome(){$("nav").hidden=mode==="home"||(mode==="mentor"&&!pinMem);
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.hidden=b.dataset.m!==(mode==="mentor"?"m":"j")});
+  $("tabsCard").hidden=mode==="home"||(mode==="mentor"&&view!=="brief")||(mode==="junior"&&view==="jlist");
+  $("topBar").hidden=mode==="home";$("homeBtn").textContent=mode==="mentor"?"🔒 ออกจากหน้าพี่เลี้ยง":"🏠 หน้าแรก"}
+function all(){tabs();fields();renderImgs();renderSel();chrome();save()}
+function go(v){var ok={home:["home"],mentor:pinMem?["lib","brief"]:["gate"],junior:["jlist","fill","img","cap","res"]}[mode];if(ok.indexOf(v)<0)v=ok[0];view=v;
+  Array.prototype.forEach.call(document.querySelectorAll(".view"),function(s){s.classList.toggle("on",s.id==="v-"+v)});
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"),function(b){b.classList.toggle("on",b.dataset.go===v)});
+  chrome();if(v==="res")renderSel();if((v==="jlist"||v==="lib")&&db)loadList();if(v==="brief")loadSubs();say(TIPS[v]);window.scrollTo(0,0)}
+function enter(m,v){mode=m;selT=false;go(v)}
+function clearHash(){try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}}
+function join(id){S={id:id,p:"",M:[nm()],cur:0,cloud:true};mode="junior";try{history.replaceState(null,"","#p="+id)}catch(e){}sub(id);all();enter("junior","fill")}
+function addMedia(n){var m=nm();m.n=n;S.M.push(m);S.cur=S.M.length-1;dirty();all()}
+
+Object.keys(BMAP).forEach(function(i){$(i).addEventListener("input",function(){cur()[BMAP[i]]=this.value;if(i==="bName"){tabs();renderSel()}if(i==="bProd")renderImgs();dirty();save()})});
+Object.keys(JMAP).forEach(function(i){$(i).addEventListener("input",function(){cur().j[JMAP[i]]=this.value;if(i==="jCap")capInfo();save()})});
+$("pName").addEventListener("input",function(){S.p=this.value;dirty()});
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.go)}});
+document.querySelectorAll(".pre").forEach(function(b){b.onclick=function(){addMedia(b.dataset.n)}});
+$("artIn").onchange=function(){addFiles(this.files,cur().j.ai,function(){renderImgs()});this.value=""};
+$("dupBtn").onclick=function(){var m=nm(),c=cur();["n","h","d","r","t"].forEach(function(k){m[k]=c[k]});m.n=(c.n||"สื่อ")+" (สำเนา)";S.M.push(m);S.cur=S.M.length-1;dirty();all()};
+$("delBtn").onclick=function(){if(S.M.length<2)return;S.M.splice(S.cur,1);S.cur=Math.max(0,S.cur-1);dirty();all()};
+
+$("goJunior").onclick=function(){S=fresh();enter("junior","jlist");all()};
+$("goMentor").onclick=function(){S=fresh();enter("mentor",pinMem?"lib":"gate");all()};
+$("homeBtn").onclick=function(){pinMem="";pend=null;$("delAsk").hidden=true;$("gatePin").value="";$("gateMsg").textContent="";if(unsub){unsub();unsub=null}clearHash();conn("");S=fresh();$("shareMsg").textContent="";$("newForm").hidden=true;enter("home","home");all()};
+$("jRefresh").onclick=loadList;$("libRefresh").onclick=loadList;
+function enterMentor(pin){pinMem=pin;$("gatePin").value="";$("setPin").value="";$("setPin2").value="";$("gateMsg").textContent="";enter("mentor","lib");all()}
+$("gateGo").onclick=function(){var pin=$("gatePin").value,m=$("gateMsg");if(!db){m.textContent="เชื่อมต่อคลังไม่ได้";return}
+  if(pin.length<6){m.textContent="รหัสอย่างน้อย 6 ตัวนะ";return}m.textContent="กำลังตรวจรหัส...";
+  login(pin,false).then(function(){enterMentor(pin)}).catch(function(e){m.textContent="รหัสไม่ถูกต้อง หรือยังไม่เคยตั้งรหัส ("+((e&&e.code)||"")+")"})};
+$("setGo").onclick=function(){var a=$("setPin").value,b=$("setPin2").value,m=$("gateMsg");if(!db){m.textContent="เชื่อมต่อคลังไม่ได้";return}
+  if(a.length<6){m.textContent="รหัสอย่างน้อย 6 ตัวนะ";return}if(a!==b){m.textContent="รหัสสองครั้งไม่ตรงกัน";return}m.textContent="กำลังตั้งรหัส...";
+  login(a,true).then(function(){enterMentor(a)}).catch(function(e){m.textContent="ตั้งรหัสไม่ได้ อาจมีรหัสอยู่แล้ว ให้ใช้ช่องเข้าสู่ระบบด้านบน ("+((e&&e.code)||"")+")"})};
+$("delCancel").onclick=function(){$("delAsk").hidden=true;pend=null};
+$("delGo").onclick=function(){if(!pend||!pinMem)return;var id=pend.id;$("libMsg").textContent="กำลังลบ...";
+  delPromo(pinMem,id).then(function(){$("delAsk").hidden=true;pend=null;$("libMsg").textContent="ลบโปรแล้ว";loadList();setTimeout(function(){$("libMsg").textContent=""},2500)})
+  .catch(function(e){$("libMsg").textContent="ลบไม่สำเร็จ ("+((e&&e.code)||"")+")"})};
+$("newBtn").onclick=function(){$("newForm").hidden=false;$("delAsk").hidden=true;$("newTitle").focus()};
+$("newCancel").onclick=function(){$("newForm").hidden=true};
+$("newGo").onclick=function(){var t=$("newTitle").value.trim();
+  if(!t){$("libMsg").textContent="ใส่ชื่อโปรก่อนนะ";return}
+  S=fresh();S.p=t;$("newForm").hidden=true;$("newTitle").value="";$("libMsg").textContent="";
+  $("shareMsg").textContent="✏️ ยังไม่ได้บันทึกขึ้นคลัง";all();enter("mentor","brief")};
+$("saveCloud").onclick=function(){var msg=$("shareMsg");
+  if(!db){msg.textContent="เชื่อมต่อคลังไม่ได้";return}
+  if(!pinMem){msg.textContent="ยังไม่ได้เข้าสู่ระบบพี่เลี้ยง";return}
+  if(!S.p.trim()){msg.textContent="ใส่ชื่อโปรโมชั่นก่อนนะ";return}
+  msg.textContent="กำลังบันทึก...";
+  put(pinMem,S.id,S.p,briefs()).then(function(){S.cloud=true;loadSubs();msg.textContent="บันทึกขึ้นคลังแล้ว ☁️ น้องเปิดโปรนี้จะเห็นข้อมูลล่าสุดเอง ไม่ต้องส่งอะไรให้น้อง"})
+  .catch(function(e){msg.textContent="บันทึกไม่สำเร็จ: รหัสไม่ตรง หรือยังไม่ได้ตั้งกฎ หรือไม่มีอินเทอร์เน็ต ("+((e&&e.code)||"")+")"})};
+$("subRefresh").onclick=loadSubs;
+$("capCopy").onclick=function(){copy($("capLine").dataset.t||"",this)};
+$("runBtn").onclick=show;
+$("submitBtn").onclick=submit;
+$("lineBtn").onclick=function(){openLine(report())};
+$("repBtn").onclick=function(){copy(report(),this)};
+$("saveBtn").onclick=function(){if(!entries.length)return;var l=getLog();entries.forEach(function(e){l.push(e)});setLog(l);stats();var b=this;b.textContent="บันทึกแล้ว 🎉";setTimeout(function(){b.textContent="บันทึกลงสถิติ"},1600)};
+$("resetLog").onclick=function(){setLog([]);stats()};
+$("demoBtn").onclick=function(){
+  var a=nm(),b=nm();a.n="Facebook";a.h="Jingle Bell Deal";a.d="เมื่อซื้อสินค้าที่ร่วมรายการ 2 ชิ้น 99.- จากราคาปกติ 110.-, 120.-, 130.-";a.r="เรดเวลเวทครีมชีสชิโอะปัง\nเมลอนชิโอะปัง";a.t="24 Dec 26 - 3 Jan 27";
+  b.n="จอ LED";b.h="Jingle Bell Deal";b.d="2 ชิ้น 99.-";b.r=a.r;b.t=a.t;
+  S.p=S.p||"Jingle Bell Deal (ตัวอย่าง)";S.M=[a,b];S.cur=0;dirty();all()};
+$("mas").onclick=function(){var e=$("mas");e.classList.remove("jump");void e.offsetWidth;e.classList.add("jump");say(CHEER[Math.floor(Math.random()*CHEER.length)])};
+try{$("byName").value=localStorage.getItem("vc_by")||""}catch(e){}
+
+var hm=location.hash.match(/^#p=([a-z0-9]+)$/);
+if(hm){S={id:hm[1],p:"",M:[nm()],cur:0,cloud:true};mode="junior";view="fill";sub(S.id)}
+all();stats();go(view);
+</script>
+</body>
+</html>
